@@ -1,0 +1,10 @@
+# comment
+/out/
+/.idea/workspace.xml
+/.idea/artifacts/propertyManagement_war_exploded.xml
+/json/test.json
+/web/res/
+/web/classes
+
+# mac bin
+.DS_Store
