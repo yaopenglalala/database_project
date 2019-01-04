@@ -38,13 +38,13 @@ public class JdbcDaoImpl<T> implements DAO<T> {
 
     //增删改操作
     @Override
-    public void update(Connection connection, String sql, Object... args){
+    public int update(Connection connection, String sql, Object... args){
         try{
-            queryRunner.update(connection,sql,args);
+            return queryRunner.update(connection,sql,args);
         } catch (SQLException e){
             e.printStackTrace();
         }
-
+        return 0;
     }
 
     //一系列查询操作

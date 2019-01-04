@@ -7,10 +7,10 @@
         <identifier-quote-string>`</identifier-quote-string>
       </database-info>
       <case-sensitivity plain-identifiers="lower" quoted-identifiers="lower" />
-      <secret-storage>memory</secret-storage>
       <user-name>root</user-name>
-      <introspection-scope>communitysystem:</introspection-scope>
+      <introspection-schemas>*:communitysystem|communitysystem:</introspection-schemas>
       <resolve-scope>communitysystem:</resolve-scope>
+      <unqualified-resolve-schemas>communitysystem:</unqualified-resolve-schemas>
     </data-source>
   </component>
 </project>

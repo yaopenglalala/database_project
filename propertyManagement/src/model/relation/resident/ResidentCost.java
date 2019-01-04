@@ -7,9 +7,11 @@ import java.util.Date;
  */
 public class ResidentCost {
     private int cost_id;
-    private  int resident_id;
-    private  String description;
+    private int resident_id;
+    private String description;
+    private float cost;
     private Date time;
+    private int state;
 
     public int getCost_id() {
         return cost_id;
@@ -41,5 +43,21 @@ public class ResidentCost {
 
     public void setTime(Date time) {
         this.time = time;
+    }
+
+    public float getCost() {
+        return cost;
+    }
+
+    public void setCost(float cost) {
+        this.cost = cost;
+    }
+
+    public int getState() {
+        return state;
+    }
+
+    public void setState(int state) {
+        this.state = state;
     }
 }

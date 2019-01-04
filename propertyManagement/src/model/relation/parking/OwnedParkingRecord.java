@@ -7,8 +7,8 @@ import java.util.Date;
  */
 public class OwnedParkingRecord {
     private int record_id;
-    private  int parking_space_id;
-    private  int resident_id;
+    private int parking_space_id;
+    private int resident_id;
     private Date date;
     private float cost;
 
