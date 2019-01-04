@@ -1,9 +1,9 @@
-package model;
+package model.relation;
 
 /**
  * Created by your dad on 2019/1/3.
  */
-public class Proper_month_record {
+public class ProperMonthRecord {
     private int year;
     private int month;
     private int type;

@@ -1,11 +1,11 @@
-package model;
+package model.relation;
 
 import java.util.Date;
 
 /**
  * Created by your dad on 2019/1/3.
  */
-public class Property_record {
+public class PropertyRecord {
     private int order_id;
     private int type;
     private float amount;

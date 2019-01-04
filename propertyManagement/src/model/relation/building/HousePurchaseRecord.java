@@ -1,11 +1,11 @@
-package model;
+package model.relation.building;
 
 import java.util.Date;
 
 /**
  * Created by your dad on 2019/1/3.
  */
-public class House_purchase_record {
+public class HousePurchaseRecord {
     private int order_id;
     private int house_id;
     private int resident_id;

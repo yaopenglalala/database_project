@@ -1,17 +1,18 @@
-package model;
+package model.relation.equipment;
 
 import java.util.Date;
 
 /**
  * Created by your dad on 2019/1/3.
  */
-public class Complaint {
-    private int feedback_id;
+public class EquipmentIssue {
+    private  int feedback_id;
     private int house_id;
+    private int equipment_id;
+    private  int repair_id;
     private int type;
     private String description;
-    private String process;
-    private Date date;
+    private Date time;
 
     public int getFeedback_id() {
         return feedback_id;
@@ -27,6 +28,22 @@ public class Complaint {
 
     public void setHouse_id(int house_id) {
         this.house_id = house_id;
+    }
+
+    public int getEquipment_id() {
+        return equipment_id;
+    }
+
+    public void setEquipment_id(int equipment_id) {
+        this.equipment_id = equipment_id;
+    }
+
+    public int getRepair_id() {
+        return repair_id;
+    }
+
+    public void setRepair_id(int repair_id) {
+        this.repair_id = repair_id;
     }
 
     public int getType() {
@@ -45,19 +62,11 @@ public class Complaint {
         this.description = description;
     }
 
-    public String getProcess() {
-        return process;
+    public Date getTime() {
+        return time;
     }
 
-    public void setProcess(String process) {
-        this.process = process;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
+    public void setTime(Date time) {
+        this.time = time;
     }
 }
