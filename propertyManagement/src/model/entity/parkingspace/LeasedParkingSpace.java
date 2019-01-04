@@ -1,7 +1,7 @@
 package model.entity.parkingspace;
 
 /**
- * Created by your dad on 2019/1/3.
+ * Created by our dad on 2019/1/3.
  */
 public class LeasedParkingSpace {
     private  int parking_space_id;
