@@ -8,9 +8,7 @@
       </database-info>
       <case-sensitivity plain-identifiers="lower" quoted-identifiers="lower" />
       <user-name>root</user-name>
-      <introspection-schemas>*:communitysystem|communitysystem:</introspection-schemas>
       <resolve-scope>communitysystem:</resolve-scope>
-      <unqualified-resolve-schemas>communitysystem:</unqualified-resolve-schemas>
     </data-source>
   </component>
 </project>
