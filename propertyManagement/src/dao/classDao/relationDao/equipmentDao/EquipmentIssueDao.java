@@ -29,7 +29,7 @@ public class EquipmentIssueDao extends JdbcDaoImpl<EquipmentIssue> {
 
     public List<EquipmentIssue> getIssuesByBuildingId(int buildingId){
         String sql = "SELECT feedback_id, house_id, equipment_id, repair_id, type, description, time " +
-                "FROM house natural join equipment_issue where building_id = ?";
+                "FROM HouseService natural join equipment_issue where building_id = ?";
         return getList(connection, sql, buildingId);
     }
 

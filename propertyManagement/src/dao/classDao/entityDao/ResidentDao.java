@@ -25,6 +25,16 @@ public class ResidentDao extends JdbcDaoImpl<Resident> {
         return true;
     }
 
+    public Resident getResidentByResidentId(int residentId){
+        String sql = "SELECT * FROM resident where resident_id = ?";
+        return get(connection, sql, residentId);
+    }
+
+    public Resident getResidentByIdentity(String identity){
+        String sql = "SELECT * FROM resident where identity_card = ?";
+        return get(connection, sql, identity);
+    }
+
     public List<Resident> getAllResident(){
         String sql = "SELECT * " +
                 "FROM resident ORDER BY resident_id DESC";
