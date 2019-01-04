@@ -11,7 +11,7 @@ public class ResidentCost {
     private String description;
     private float cost;
     private Date time;
-    private int state;
+    private int state;//0已缴费，1未缴费
 
     public int getCost_id() {
         return cost_id;

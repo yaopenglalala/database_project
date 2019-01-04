@@ -40,11 +40,15 @@ public class BuildingDao extends JdbcDaoImpl<Building> {
         return true;
     }
 
-    public List<Building> getAllIndoorEquipment(){
+    public List<Building> getBuildingsByCommunityId(int communityId){
+        String sql = "SELECT * FROM building where community_id = ?";
+        return getList(connection, sql, communityId);
+    }
+
+    public List<Building> getAllBuildings(){
         String sql = "SELECT * " +
                 "FROM building ORDER BY building_id DESC";
         return getList(connection, sql);
     }
-
 
 }

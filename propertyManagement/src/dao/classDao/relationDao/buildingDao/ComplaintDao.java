@@ -33,7 +33,7 @@ public class ComplaintDao extends JdbcDaoImpl<Complaint> {
     }
 
     public List<Complaint> getComplaintsByBuildingId(int building_id){
-        String sql = "SELECT feedback_id, house_id, type, description, process, date FROM house natural join complaint where building_id = ?";
+        String sql = "SELECT feedback_id, house_id, type, description, process, date FROM HouseService natural join complaint where building_id = ?";
         return getList(connection, sql, building_id);
     }
 

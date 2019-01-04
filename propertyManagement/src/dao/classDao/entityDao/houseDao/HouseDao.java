@@ -26,6 +26,11 @@ public class HouseDao extends JdbcDaoImpl<House> {
         return true;
     }
 
+    public List<House> getHousesByBuildingId(int building_id){
+        String sql = "SELECT * FROM house where building_id = ?";
+        return getList(connection, sql, building_id);
+    }
+
     public List<House> getAllHouse(){
         String sql = "SELECT * " +
                 "FROM house ORDER BY house_id DESC";
