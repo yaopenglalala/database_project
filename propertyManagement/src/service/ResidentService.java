@@ -41,6 +41,10 @@ public class ResidentService {
         return residentDao.getResidentByResidentId(housePurchaseRecord.getResident_id());
     }
 
+    public boolean pay(int costId){
+        return residentCostDao.modifyState(costId, 0);
+    }
+
     /**
      *
      * @param residentId
