@@ -6,10 +6,10 @@ import java.util.Date;
  * Created by your dad on 2019/1/3.
  */
 public class EquipmentIssue {
-    private  int feedback_id;
+    private int feedback_id;
     private int house_id;
     private int equipment_id;
-    private  int repair_id;
+    private int repair_id;
     private int type;
     private String description;
     private Date time;

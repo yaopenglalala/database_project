@@ -7,6 +7,7 @@ public class LeasedParkingSpace {
     private  int parking_space_id;
     private int community_id;
     private String description;
+    private int parking_state;
 
     public int getParking_space_id() {
         return parking_space_id;
@@ -30,5 +31,13 @@ public class LeasedParkingSpace {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public int getParking_state() {
+        return parking_state;
+    }
+
+    public void setParking_state(int parking_state) {
+        this.parking_state = parking_state;
     }
 }
