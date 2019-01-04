@@ -16,10 +16,18 @@ public class LeasedParkingSpaceDao extends JdbcDaoImpl<LeasedParkingSpace> {
         init();
     }
     private static void init(){}
-    public boolean addLeasedParkingSpaceDao(LeasedParkingSpace leasedParkingSpace) {
+    public boolean addLeasedParkingSpace(LeasedParkingSpace leasedParkingSpace) {
         String sql = "INSERT INTO leased_parking_space (parking_space_id, community_id, description) " +
                 "values (?,?,?)";
         update(connection,sql,leasedParkingSpace.getParking_space_id(), leasedParkingSpace.getCommunity_id(), leasedParkingSpace.getDescription());
+        return true;
+    }
+
+
+    public boolean updateLeasedParkingSpace(LeasedParkingSpace leasedParkingSpace){
+      //  if (getIndoorEquipmentId(indoorEquipment.getEquipment_id()) == null) return false;
+        String sql = "UPDATE leased_parking_space SET parking_state=? where parking_space_id = ?";
+        update(connection,sql,leasedParkingSpace.getParking_state(),leasedParkingSpace.getParking_space_id());
         return true;
     }
   /*  public OwnedParkingSpace getOwnedParkingSpace(int temporaryParkingSpaceId){
