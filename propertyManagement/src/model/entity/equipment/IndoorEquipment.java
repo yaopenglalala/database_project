@@ -1,9 +1,9 @@
-package model;
+package model.entity.equipment;
 
 /**
  * Created by your dad on 2019/1/3.
  */
-public class Indoor_equipment {
+public class IndoorEquipment {
     private int equipment_id;
     private  int building_id;
     private  String type;

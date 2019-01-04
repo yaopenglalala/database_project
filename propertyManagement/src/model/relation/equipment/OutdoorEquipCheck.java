@@ -1,14 +1,14 @@
-package model;
+package model.relation.equipment;
 
 import java.util.Date;
 
 /**
  * Created by your dad on 2019/1/3.
  */
-public class In_equip_check {
-    private int check_id;
-    private int equipment_id;
-    private int state;
+public class OutdoorEquipCheck {
+    private  int check_id;
+    private  int equipment_id;
+    private  int state;
     private Date time;
 
     public int getCheck_id() {

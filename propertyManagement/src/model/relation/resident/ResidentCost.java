@@ -1,11 +1,11 @@
-package model;
+package model.relation.resident;
 
 import java.util.Date;
 
 /**
  * Created by your dad on 2019/1/3.
  */
-public class Resident_cost {
+public class ResidentCost {
     private int cost_id;
     private  int resident_id;
     private  String description;

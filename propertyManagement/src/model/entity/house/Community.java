@@ -1,4 +1,4 @@
-package model;
+package model.entity.house;
 
 /**
  * Created by your dad on 2019/1/3.

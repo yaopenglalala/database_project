@@ -1,11 +1,11 @@
-package model;
+package model.relation.equipment;
 
 import java.util.Date;
 
 /**
  * Created by your dad on 2019/1/3.
  */
-public class In_equip_repair {
+public class IndoorEquipRepair {
     private int repair_id;
     private int equipment_id;
     private  int state;

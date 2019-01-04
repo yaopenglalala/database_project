@@ -1,9 +1,9 @@
-package model;
+package model.entity.parkingspace;
 
 /**
  * Created by your dad on 2019/1/3.
  */
-public class Leased_parking_space {
+public class OwnedParkingSpace {
     private  int parking_space_id;
     private int community_id;
     private String description;
