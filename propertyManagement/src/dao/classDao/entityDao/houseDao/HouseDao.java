@@ -1,4 +1,4 @@
-package dao.classDao;
+package dao.classDao.entityDao.houseDao;
 
 import dao.JDBCUtil;
 
