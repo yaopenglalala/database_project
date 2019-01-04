@@ -75,6 +75,8 @@ public class HouseService {
         purchaseRecord.setCost(cost);
         purchaseRecord.setTime(new Date());
         housePurchaseRecordDao.addRecord(purchaseRecord);
+
+        residentService.addCost(residentId, "Purchase house", cost);
         return 0;
     }
 }

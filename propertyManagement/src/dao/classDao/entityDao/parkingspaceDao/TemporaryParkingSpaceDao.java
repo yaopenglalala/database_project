@@ -2,13 +2,14 @@ package dao.classDao.entityDao.parkingspaceDao;
 
 import dao.JDBCUtil;
 import dao.daoInterface.JdbcDaoImpl;
+import model.entity.house.Community;
 import model.entity.parkingspace.TemporaryParkingSpace;
 
 import java.sql.Connection;
 import java.util.List;
 
 /**
- * Created by your dad on 2019/1/4.
+ * Created by MoonBird on 2019/1/4.
  */
 public class TemporaryParkingSpaceDao extends JdbcDaoImpl<TemporaryParkingSpace> {
     private static Connection connection = JDBCUtil.getConnection();
@@ -36,5 +37,15 @@ public class TemporaryParkingSpaceDao extends JdbcDaoImpl<TemporaryParkingSpace>
         String sql = "SELECT * " +
                 "FROM temporary_parking_space ORDER BY parking_space_id DESC";
         return getList(connection, sql);
+    }
+
+    public List<TemporaryParkingSpace> getTempParkingByCommunityAndState(Community community, int state){
+        String sql = "SELECT * FROM temporary_parking_space where community_id = ? and parking_state = ?";
+        return getList(connection, sql, community.getCommunity_id(), state);
+    }
+
+    public List<TemporaryParkingSpace> getTempParkingSpacesByCommunity(Community community){
+        String sql = "SELECT * FROM temporary_parking_space where community_id = ?";
+        return getList(connection, sql, community.getCommunity_id());
     }
 }
