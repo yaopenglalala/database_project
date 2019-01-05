@@ -492,7 +492,7 @@ public class UI {
                                 int c = Integer.parseInt(Input());
                                 if (c == 0)
                                     break;
-                                feedbackService.modifyIssueRepairId(equipmentIssues.get(e-1),c);
+                                feedbackService.modifyIssueRepairId(equipmentIssues.get(e - 1), c);
                             }
                             if (issue == 2) {
                                 List<EquipmentIssue> equipmentIssues = feedbackService.getSolvingIssues(building);
@@ -536,7 +536,7 @@ public class UI {
                         }
                         if (input.equals("4")) {
 //3.4
-
+                            while (true) {
                             /*list<>
                             * 解决，未解决
                             * */
@@ -582,7 +582,7 @@ public class UI {
                             }
 
                         }
-                    
+                    }
                 }
                 if (input.equals("4")) {
 //4
