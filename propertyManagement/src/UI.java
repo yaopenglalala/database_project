@@ -384,6 +384,8 @@ public class UI {
                         }
                         if (input.equals("2")) {
                             //打印用户缴纳记录，时间由最近到之前
+                            List<ResidentCost> residentCosts = paymentService.getResidentCost();
+                            System.out.println("停车位ID  "+"车牌号  "+"起始时间  "+"结束时间  "+"钱  ");
                         }
                         if (input.equals("3")) {
                             //打印维修记录，时间由最近到之前
