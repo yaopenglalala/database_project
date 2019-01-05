@@ -77,7 +77,7 @@ public class PaymentService {
         return residentCostDao.getCostsByResidentId(id);
     }
 
-    public void monthProperty() throws ParseException {
+    public ProperMonthRecord monthProperty() throws ParseException {
         int firstMonthFlag = 0;
         Calendar calendar = Calendar.getInstance();
         if (calendar.get(Calendar.MONTH) == 0) firstMonthFlag = 1;
@@ -102,8 +102,9 @@ public class PaymentService {
         Date lastMonthEnd = sdf.parse(lastMonthYear + "-"  + lastMonthMonth + "-" + "30");
         System.out.println(lastMonthEnd);
 
+
         ProperMonthRecord monthRecord = properMonthRecordDao.getRecordByYearAndMonth(lastMonthYear, lastMonthMonth);
-        if (monthRecord != null) return;
+        if (monthRecord != null) return monthRecord;
 
         ParkingService parkingService = new ParkingService();
         ResidentService residentService = new ResidentService();
@@ -179,5 +180,6 @@ public class PaymentService {
             monthRecord.setType(1);
             properMonthRecordDao.addProperMonthRecord(monthRecord);
         }
+        return monthRecord;
     }
 }
