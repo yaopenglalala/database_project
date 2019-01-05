@@ -12,6 +12,7 @@ import model.entity.parkingspace.LeasedParkingSpace;
 import model.entity.parkingspace.OwnedParkingSpace;
 import model.entity.parkingspace.TemporaryParkingSpace;
 import model.relation.parking.LeasedParkingRecord;
+import model.relation.parking.OwnedParkingRecord;
 import model.relation.parking.TemporaryParkingRecord;
 
 import java.util.Date;
@@ -71,27 +72,7 @@ public class ParkingService {
      * @param space
      * @return 0表示操作完成，1表示已有人使用，2表示没有该车位
      */
-    public int tempParking(TemporaryParkingSpace space){
-        space = tempDao.getTemporaryParkingSpace(space.getParking_space_id());
-        if (space == null) return 2;
-        else if (space.getParking_state() == 1) return 1;
-        else {
-            space.setParking_state(1);
-            tempDao.updateTemporaryParkingSpace(space);
-        }
-        return 0;
-    }
-
-    /**
-     * 添加临时停车信息
-     * @param space
-     * @param carId
-     * @param startTime
-     * @param endTime
-     * @param cost
-     * @return 0表示操作完成，1表示已有人使用，2表示没有该车位
-     */
-    public int addTempParkingRecord(TemporaryParkingSpace space, String carId, Date startTime, Date endTime, float cost){
+    public int tempParking(TemporaryParkingSpace space, String carId){
         space = tempDao.getTemporaryParkingSpace(space.getParking_space_id());
         if (space == null) return 2;
         else if (space.getParking_state() == 1) return 1;
@@ -101,8 +82,28 @@ public class ParkingService {
             TemporaryParkingRecord record = new TemporaryParkingRecord();
             record.setParking_space_id(space.getParking_space_id());
             record.setCar_id(carId);
-            record.setStart_time(startTime);
-            record.setEnd_time(endTime);
+            record.setStart_time(new Date());
+            tempRecordDao.addRecord(record);
+        }
+        return 0;
+    }
+
+    /**
+     * 车位离开
+     * @param space
+     * @param cost
+     * @return 0表示操作完成，1表示没有使用，2表示没有该车位
+     */
+    public int tempLeaving(TemporaryParkingSpace space, float cost){
+        space = tempDao.getTemporaryParkingSpace(space.getParking_space_id());
+        if (space == null) return 2;
+        else if (space.getParking_state() == 0) return 1;
+        else {
+            space.setParking_state(0);
+            tempDao.updateTemporaryParkingSpace(space);
+            TemporaryParkingRecord record = tempRecordDao.getRecordLatest(space.getParking_space_id());
+            record.setParking_space_id(space.getParking_space_id());
+            record.setEnd_time(new Date());
             record.setCost(cost);
             tempRecordDao.addRecord(record);
         }
@@ -139,8 +140,19 @@ public class ParkingService {
      * @param cost
      * @return 0表示操作完成，1表示已有人使用，2表示没有该车位
      */
-//    public int purchaseParkingSpace(Resident resident, OwnedParkingSpace space, float cost){
-//        if (ownedRecordDao.getRecordBySpaceId(space.getParking_space_id()) != null) return 1;
-//
-//    }
+    public int purchaseParkingSpace(Resident resident, OwnedParkingSpace space, float cost){
+        if (ownedDao.getOwnedParkingSpaceBySpaceId(space.getParking_space_id()) == null) return 2;
+        else if (ownedRecordDao.getRecordBySpaceId(space.getParking_space_id()) != null) return 1;
+        else {
+            OwnedParkingRecord record = new OwnedParkingRecord();
+            ResidentService residentService = new ResidentService();
+            residentService.addCost(resident.getResident_id(),"Purchase parking space.", cost);
+            record.setResident_id(resident.getResident_id());
+            record.setParking_space_id(space.getParking_space_id());
+            record.setCost(cost);
+            record.setDate(new Date());
+            ownedRecordDao.addRecord(record);
+            return 1;
+        }
+    }
 }
