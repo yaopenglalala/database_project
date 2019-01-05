@@ -19,7 +19,7 @@ public class EquipmentIssueDao extends JdbcDaoImpl<EquipmentIssue> {
     public boolean addIssue(EquipmentIssue equipmentIssue){
         String sql = "INSERT INTO equipment_issue (house_id, equipment_id, repair_id, type, description, time) " +
                 "value (?,?,?,?,?,?)";
-        return update(connection, sql) != 0;
+        return update(connection, sql,equipmentIssue.getHouse_id(),equipmentIssue.getEquipment_id(),equipmentIssue.getRepair_id(),equipmentIssue.getType(),equipmentIssue.getDescription(),equipmentIssue.getTime()) != 0;
     }
 
     public boolean modifyRepairId(int issueId, int repairId){
@@ -28,12 +28,12 @@ public class EquipmentIssueDao extends JdbcDaoImpl<EquipmentIssue> {
     }
 
     public List<EquipmentIssue> getNotSolvedIssues(int buildingId){
-        String sql = "SELECT * FROM equipment_issue where building_id = ? and repair_id is null";
+        String sql = "SELECT * FROM house natural join equipment_issue where building_id = ? and repair_id is null";
         return getList(connection, sql, buildingId);
     }
 
     public List<EquipmentIssue> getSolvingIssues(int buildingId){
-        String sql = "SELECT * FROM equipment_issue where building_id = ? and repair_id is not null";
+        String sql = "SELECT * FROM house natural join equipment_issue where building_id = ? and repair_id is not null";
         return getList(connection, sql, buildingId);
     }
 

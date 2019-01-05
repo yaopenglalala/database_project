@@ -69,6 +69,11 @@ public class IndoorEquipmentDao extends JdbcDaoImpl<IndoorEquipment> {
                 "FROM indoor_equipment";
         return getList(connection, sql);
     }
+    public IndoorEquipment getIndoorEquipment(int id){
+        String sql = "SELECT * " +
+                "FROM indoor_equipment WHERE equipment_id = ?";
+        return get(connection, sql,id);
+    }
 
     public List<IndoorEquipment> getInEquipByState(Building building, int state){
         String sql = "SELECT * FROM indoor_equipment where building_id = ? and state = ?";
@@ -77,6 +82,6 @@ public class IndoorEquipmentDao extends JdbcDaoImpl<IndoorEquipment> {
 
     public List<IndoorEquipment> getInEquipByBuilding(Building building){
         String sql = "SELECT * FROM indoor_equipment where building_id = ?";
-        return getList(connection, sql);
+        return getList(connection, sql,building.getBuilding_id());
     }
 }

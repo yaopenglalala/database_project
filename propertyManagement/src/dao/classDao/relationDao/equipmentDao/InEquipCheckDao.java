@@ -18,7 +18,7 @@ public class InEquipCheckDao extends JdbcDaoImpl<IndoorEquipCheck> {
     }
 
     public boolean addCheck(IndoorEquipCheck check){
-        String sql = "INSERT INTO in_equip_check (equipment_id, sate, time)" +
+        String sql = "INSERT INTO in_equip_check (equipment_id, state, time)" +
                 "value (?,?,?)";
         return update(connection, sql, check.getEquipment_id(), check.getState(), check.getTime()) != 0;
     }
