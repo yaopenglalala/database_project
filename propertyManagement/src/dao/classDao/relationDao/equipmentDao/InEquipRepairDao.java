@@ -24,10 +24,16 @@ public class InEquipRepairDao extends JdbcDaoImpl<IndoorEquipRepair> {
         return update(connection, sql, state, repairId) != 0;
     }
 
-    public List<IndoorEquipRepair> getRepairsByEquimentId(int equipmentId){
+    public List<IndoorEquipRepair> getRepairsByEquipmentId(int equipmentId){
         String sql = "SELECT * FROM in_equip_repair where equipment_id = ?";
         return getList(connection, sql, equipmentId);
     }
+
+    public IndoorEquipRepair getRepairByRepairId(int repairId){
+        String sql = "SELECT * FROM in_equip_repair where repair_id = ?";
+        return get(connection, sql, repairId);
+    }
+
     public List<IndoorEquipRepair> getAllRepairs(){
         String sql = "SELECT * FROM in_equip_repair where cost >0";
         return getList(connection, sql);
