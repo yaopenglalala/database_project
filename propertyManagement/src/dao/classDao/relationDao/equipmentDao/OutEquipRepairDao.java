@@ -37,7 +37,7 @@ public class OutEquipRepairDao extends JdbcDaoImpl<OutdoorEquipRepair> {
 
     public List<OutdoorEquipRepair> getRepairsByTime(Date start, Date end) {
         String sql = "SELECT * FROM out_equip_repair where time > ? and time < ?";
-        return getList(connection, sql);
+        return getList(connection, sql,start,end);
     }
 
     private static void init() {

@@ -14,6 +14,7 @@ import model.relation.parking.TemporaryParkingRecord;
 import model.relation.resident.ResidentCost;
 import service.*;
 
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
@@ -646,6 +647,11 @@ public class UI {
                         }
                         if (input.equals("5")) {
                             //月初，更新物业收费和车位收费
+                            try {
+                                paymentService.monthProperty();
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
                 }

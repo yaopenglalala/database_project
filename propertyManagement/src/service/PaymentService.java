@@ -7,7 +7,6 @@ import dao.classDao.relationDao.equipmentDao.OutEquipRepairDao;
 import dao.classDao.relationDao.parkingDao.TemporaryParkingRecordDao;
 import dao.classDao.relationDao.residentDao.ResidentCostDao;
 import model.entity.house.Building;
-import model.entity.house.Community;
 import model.entity.house.House;
 import model.relation.ProperMonthRecord;
 import model.relation.PropertyRecord;
@@ -19,6 +18,8 @@ import model.relation.parking.OwnedParkingRecord;
 import model.relation.parking.TemporaryParkingRecord;
 import model.relation.resident.ResidentCost;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -76,27 +77,32 @@ public class PaymentService {
         return residentCostDao.getCostsByResidentId(id);
     }
 
-    public void monthProperty() {
+    public void monthProperty() throws ParseException {
         int firstMonthFlag = 0;
         Calendar calendar = Calendar.getInstance();
         if (calendar.get(Calendar.MONTH) == 0) firstMonthFlag = 1;
-        int currentYear = calendar.get(Calendar.YEAR);
-        int currentMonth = calendar.get(Calendar.MONTH);
-        int lastMonthYear = calendar.get(Calendar.YEAR) - firstMonthFlag;
-        int lastMonthMonth = calendar.get(Calendar.MONTH) - 1;
-        if (lastMonthMonth == -1) lastMonthMonth = 12;
 
-        calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), 1);
+        int currentYear = calendar.get(Calendar.YEAR);
+        int currentMonth = calendar.get(Calendar.MONTH) + 1;
+
+        int lastMonthYear = currentYear - firstMonthFlag;
+        System.out.println(lastMonthYear);
+        int lastMonthMonth = currentMonth - 1;
+        if (lastMonthMonth == 0) lastMonthMonth = 12;
+        System.out.println(lastMonthMonth);
+
+        calendar.set(currentYear, currentYear, 1);
         Date currentMonthStart = calendar.getTime();
-        calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), 30);
+        calendar.set(currentYear, currentMonth, 30);
         Date currentMonthEnd = calendar.getTime();
 
-        calendar.set(calendar.get(Calendar.YEAR) - firstMonthFlag, calendar.get(Calendar.MONTH) - 1 + firstMonthFlag, 1);
-        Date lastMonthStart = calendar.getTime();
-        calendar.set(calendar.get(Calendar.YEAR) - firstMonthFlag, calendar.get(Calendar.MONTH) - 1 + firstMonthFlag, 30);
-        Date lastMonthEnd = calendar.getTime();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date lastMonthStart = sdf.parse(lastMonthYear + "-"  + lastMonthMonth + "-" + "01");
+        System.out.println(lastMonthStart);
+        Date lastMonthEnd = sdf.parse(lastMonthYear + "-"  + lastMonthMonth + "-" + "30");
+        System.out.println(lastMonthEnd);
 
-        ProperMonthRecord monthRecord = properMonthRecordDao.getRecordByYearAndMonth(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1);
+        ProperMonthRecord monthRecord = properMonthRecordDao.getRecordByYearAndMonth(lastMonthYear, lastMonthMonth);
         if (monthRecord != null) return;
 
         ParkingService parkingService = new ParkingService();
