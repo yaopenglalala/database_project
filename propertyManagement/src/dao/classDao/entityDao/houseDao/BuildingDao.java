@@ -33,9 +33,9 @@ public class BuildingDao extends JdbcDaoImpl<Building> {
     }
 
     public boolean addBuilding(Building building) {
-        String sql = "INSERT INTO building (building_id, community_id,name) " +
-                "values (?,?,?)";
-        update(connection,sql,building.getBuilding_id(), building.getCommunity_id(), building.getName());
+        String sql = "INSERT INTO building (community_id, name) " +
+                "values (?,?)";
+        update(connection,sql,building.getCommunity_id(), building.getName());
         return true;
     }
 

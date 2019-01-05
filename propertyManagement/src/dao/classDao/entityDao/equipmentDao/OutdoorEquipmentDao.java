@@ -20,9 +20,9 @@ public class OutdoorEquipmentDao extends JdbcDaoImpl<OutdoorEquipment> {
     }
 
     public boolean addOutdoorEquipment(OutdoorEquipment outdoorEquipment) {
-        String sql = "INSERT INTO outdoor_equipment (equipment_id, community_id, type,description,state) " +
-                "values (?,?,?,?,?)";
-        update(connection,sql,outdoorEquipment.getEquipment_id(), outdoorEquipment.getCommunity_id(), outdoorEquipment.getType(),outdoorEquipment.getDescription(),outdoorEquipment.getState());
+        String sql = "INSERT INTO outdoor_equipment (community_id, type,description,state) " +
+                "values (?,?,?,?)";
+        update(connection,sql,outdoorEquipment.getCommunity_id(), outdoorEquipment.getType(),outdoorEquipment.getDescription(),outdoorEquipment.getState());
         return true;
     }
 

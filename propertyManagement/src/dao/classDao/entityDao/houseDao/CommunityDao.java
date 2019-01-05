@@ -7,6 +7,7 @@ import model.entity.house.Community;
 import java.sql.Connection;
 import java.sql.Statement;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by your dad on 2019/1/4.
@@ -35,15 +36,24 @@ public class CommunityDao extends JdbcDaoImpl<Community> {
     }
 
     public boolean addCommunity(Community community) {
-        String sql = "INSERT INTO community (community_id, name, longitude, latitude) " +
-                "values (?,?,?,?)";
-        update(connection,sql,community.getCommunity_id(), community.getName(), community.getLongitude(),community.getLatitude());
+        String sql = "INSERT INTO community (name, longitude, latitude) " +
+                "values (?,?,?)";
+        update(connection,sql,community.getName(), community.getLongitude(),community.getLatitude());
         return true;
     }
 
     public List<Community> getAllCommunity(){
-        String sql = "SELECT * " +
-                "FROM community ORDER BY community_id DESC";
+        String sql = "SELECT community_id as communityId, name, longitude, latitude " +
+                "FROM community "
+                +" where community_id=1";
+        List<Map<String, Object>> maps = getMap(connection, sql);
+        for (Map<String ,Object> map : maps){
+            System.out.print(map.get("communityId"));
+        }
+        List<Community> communities = getList(connection, sql);
+        for (int i = 0; i < communities.size(); i++) {
+            System.out.println(communities.get(i).getCommunityId()+ "    " + communities.get(i).getName());
+        }
         return getList(connection, sql);
     }
 

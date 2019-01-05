@@ -48,6 +48,7 @@ public class UI {
                               打印
                               1->小区名称
                               2->...
+                              完成
                              */
 //1.1
                             while (true) {
@@ -67,6 +68,7 @@ public class UI {
                               打印
                               1->楼宇名称
                               2->...
+                              完成
                             */
                                 while (true) {
                                     System.out.println("请输入楼编号");
@@ -85,6 +87,7 @@ public class UI {
                                     打印
                                     1->空闲房屋名称
                                      2->...
+                                     完成
                                       */
                                     while (true) {
                                         System.out.println("买房请输入房屋序号:");
@@ -102,7 +105,7 @@ public class UI {
                                             break;
                                         }
                                         houseService.housePurchase(inputInteger2, houses.get(inputInteger - 1), 100000 * houses.get(inputInteger - 1).getSize());
-                                        /*添加买房记录，并交（物业费
+                                        /*添加买房记录，暂时不交（物业费  完成
                                         * */
                                         System.out.println("购房成功");
                                         break;
