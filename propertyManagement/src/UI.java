@@ -7,6 +7,7 @@ import model.entity.house.House;
 import model.entity.parkingspace.LeasedParkingSpace;
 import model.entity.parkingspace.OwnedParkingSpace;
 import model.entity.parkingspace.TemporaryParkingSpace;
+import model.relation.ProperMonthRecord;
 import model.relation.PropertyRecord;
 import model.relation.building.Complaint;
 import model.relation.equipment.*;
@@ -648,7 +649,9 @@ public class UI {
                         if (input.equals("5")) {
                             //月初，更新物业收费和车位收费
                             try {
-                                paymentService.monthProperty();
+                                ProperMonthRecord properMonthRecord=paymentService.monthProperty();
+                                System.out.println("年  月 收支 金钱");
+                                System.out.println(properMonthRecord.getYear()+"  "+properMonthRecord.getMonth()+"  "+properMonthRecord.getType()+"  "+properMonthRecord.getAmount()+"  ");
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }
