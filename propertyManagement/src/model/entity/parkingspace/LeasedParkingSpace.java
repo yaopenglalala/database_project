@@ -4,24 +4,24 @@ package model.entity.parkingspace;
  * Created by our dad on 2019/1/3.
  */
 public class LeasedParkingSpace {
-    private  int parking_space_id;
-    private int community_id;
+    private  Integer parking_space_id;
+    private Integer community_id;
     private String description;
-    private int parking_state;
+    private Integer parking_state;
 
-    public int getParking_space_id() {
+    public Integer getParking_space_id() {
         return parking_space_id;
     }
 
-    public void setParking_space_id(int parking_space_id) {
+    public void setParking_space_id(Integer parking_space_id) {
         this.parking_space_id = parking_space_id;
     }
 
-    public int getCommunity_id() {
+    public Integer getCommunity_id() {
         return community_id;
     }
 
-    public void setCommunity_id(int community_id) {
+    public void setCommunity_id(Integer community_id) {
         this.community_id = community_id;
     }
 
@@ -33,11 +33,11 @@ public class LeasedParkingSpace {
         this.description = description;
     }
 
-    public int getParking_state() {
+    public Integer getParking_state() {
         return parking_state;
     }
 
-    public void setParking_state(int parking_state) {
+    public void setParking_state(Integer parking_state) {
         this.parking_state = parking_state;
     }
 }

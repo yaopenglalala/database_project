@@ -4,11 +4,11 @@ package model.entity;
  * Created by your dad on 2019/1/3.
  */
 public class Resident {
-    private int resident_id ;
+    private Integer resident_id ;
     private String identity_card;
     private String name;
     private long tel;
-    public int getResident_id() {
+    public Integer getResident_id() {
         return resident_id;
     }
 
