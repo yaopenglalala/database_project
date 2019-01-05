@@ -5,6 +5,7 @@ import dao.daoInterface.JdbcDaoImpl;
 import model.relation.building.HousePurchaseRecord;
 
 import java.sql.Connection;
+import java.util.List;
 
 /**
  * Created by moonBird on 2019/1/4.
@@ -27,6 +28,11 @@ public class HousePurchaseRecordDao extends JdbcDaoImpl<HousePurchaseRecord> {
     public HousePurchaseRecord getRecordByHouseId(int houseId){
         String sql = "SELECT * FROM house_purchase_record where house_id = ?";
         return get(connection, sql, houseId);
+    }
+
+    public List<HousePurchaseRecord> getAll(){
+        String sql = "SELECT * FROM house_purchase_record";
+        return getList(connection, sql);
     }
 
     private static void init(){

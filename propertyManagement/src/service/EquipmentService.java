@@ -139,4 +139,12 @@ public class EquipmentService {
         }
         return outRepairDao.modifyRepairState(repair.getRepair_id(), state);
     }
+
+    public List<IndoorEquipRepair> getInRepairsByTime(Date startTime, Date endTime){
+        return inRepairDao.getRepairsByTime(startTime, endTime);
+    }
+
+    public List<OutdoorEquipRepair> getOutRepairsByTime(Date startTime, Date endTime){
+        return outRepairDao.getRepairsByTime(startTime, endTime);
+    }
 }

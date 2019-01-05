@@ -5,6 +5,7 @@ import dao.daoInterface.JdbcDaoImpl;
 import model.relation.equipment.IndoorEquipRepair;
 
 import java.sql.Connection;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -38,6 +39,12 @@ public class InEquipRepairDao extends JdbcDaoImpl<IndoorEquipRepair> {
         String sql = "SELECT * FROM in_equip_repair where cost >0";
         return getList(connection, sql);
     }
+
+    public List<IndoorEquipRepair> getRepairsByTime(Date start, Date end){
+        String sql = "SELECT * FROM in_equip_repair where time > ? and time < ?";
+        return getList(connection, sql, start, end);
+    }
+
     private static void init(){
 
     }

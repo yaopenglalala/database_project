@@ -5,6 +5,7 @@ import dao.daoInterface.JdbcDaoImpl;
 import model.relation.parking.LeasedParkingRecord;
 
 import java.sql.Connection;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -31,6 +32,11 @@ public class LeasedParkingRecordDao extends JdbcDaoImpl<LeasedParkingRecord> {
     public List<LeasedParkingRecord> getRecordsByResidentId(int residentId){
         String sql = "SELECT * FROM leased_parking_record where resident_id = ?";
         return getList(connection, sql, residentId);
+    }
+
+    public List<LeasedParkingRecord> getRecordsValid(Date date){
+        String sql = "SELECT * FROM leased_parking_record where end_time > ?";
+        return getList(connection, sql, date);
     }
 
     private static void init(){

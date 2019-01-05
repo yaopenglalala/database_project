@@ -30,9 +30,14 @@ public class OwnedParkingRecordDao extends JdbcDaoImpl<OwnedParkingRecord> {
         return get(connection, sql, parkingSpaceId);
     }
 
-    public OwnedParkingRecord getRecordByResidentId(int residentId){
+    public List<OwnedParkingRecord> getRecordByResidentId(int residentId){
         String sql = "SELECT * FROM owned_parking_record where resident_id = ?";
-        return get(connection, sql, residentId);
+        return getList(connection, sql, residentId);
+    }
+
+    public List<OwnedParkingRecord> getAll(){
+        String sql = "SELECT * FROM owned_parking_record ";
+        return getList(connection, sql);
     }
 
     private static void init(){

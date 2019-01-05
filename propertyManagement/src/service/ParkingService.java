@@ -39,7 +39,7 @@ public class ParkingService {
         tempRecordDao = new TemporaryParkingRecordDao();
     }
 
-    public List<TemporaryParkingSpace> getAllTempPakingSpaces(Community community){
+    public List<TemporaryParkingSpace> getAllTempParkingSpaces(Community community){
         return tempDao.getTempParkingSpacesByCommunity(community);
     }
 
@@ -47,7 +47,7 @@ public class ParkingService {
         return leasedDao.getLeasedParkingSpacesByCommunity(community);
     }
 
-    public List<OwnedParkingSpace> getAllOwnedParkingSpace(Community community){
+    public List<OwnedParkingSpace> getOwnedParkingSpaceByCommunityId(Community community){
         return ownedDao.getOwnedParkingSpacesByCommunity(community);
     }
 
@@ -156,5 +156,22 @@ public class ParkingService {
             ownedRecordDao.addRecord(record);
             return 1;
         }
+    }
+
+    public LeasedParkingSpace getParkingSpaceBySpaceId(int spaceId){
+        return leasedDao.getLeasedParkingSpaceBySpaceId(spaceId);
+    }
+
+    /**
+     * 得到给定时间在结束时间之前的车位租赁信息，为有效信息
+     * @param date
+     * @return
+     */
+    public List<LeasedParkingRecord> getValidRentRecord(Date date){
+        return leasedRecordDao.getRecordsValid(date);
+    }
+
+    public List<OwnedParkingRecord> getOwnedParkingRecord(){
+        return ownedRecordDao.getAll();
     }
 }

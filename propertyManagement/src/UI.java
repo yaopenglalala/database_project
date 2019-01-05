@@ -192,7 +192,7 @@ public class UI {
 //2.1
                             //   List<LeasedParkingSpace> leasedParkingSpacesEmpty = parkingService.getEmptyLeasedParkingSpaces(community);
                             while (true) {
-                                List<TemporaryParkingSpace> temporaryParkingSpaces = parkingService.getAllTempPakingSpaces(community);
+                                List<TemporaryParkingSpace> temporaryParkingSpaces = parkingService.getAllTempParkingSpaces(community);
                                 System.out.println("车位编号 " + "描述" + "状态");
                                 for (int i = 0; i < temporaryParkingSpaces.size(); i++) {
                                     System.out.println((i + 1) + " " + temporaryParkingSpaces.get(i).getDescription() + "  " + temporaryParkingSpaces.get(i).getParking_state());

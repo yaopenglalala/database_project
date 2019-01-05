@@ -79,4 +79,16 @@ public class HouseService {
         residentService.addCost(residentId, "Purchase house", cost);
         return 0;
     }
+
+    public List<HousePurchaseRecord> getAllPurchasedRecord(){
+        return housePurchaseRecordDao.getAll();
+    }
+
+    public House getHouseByHouseId(int houseId){
+        return houseDao.getHouseByHouseId(houseId);
+    }
+
+    public Building getBuildingByBuildingId(int buildingId){
+        return buildingDao.getBuildingByBuildingId(buildingId);
+    }
 }

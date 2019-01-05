@@ -41,10 +41,6 @@ public class ResidentService {
         return residentDao.getResidentByResidentId(housePurchaseRecord.getResident_id());
     }
 
-    public boolean pay(int costId){
-        return residentCostDao.modifyState(costId, 0);
-    }
-
     /**
      *
      * @param residentId
@@ -62,5 +58,9 @@ public class ResidentService {
         residentCost.setState(1);
         residentCostDao.addCost(residentCost);
         return true;
+    }
+
+    public List<ResidentCost> getCostsBetweenTime(Date startTime, Date endTime){
+        return residentCostDao.getCostsByTime(startTime, endTime);
     }
 }

@@ -50,4 +50,8 @@ public class BuildingDao extends JdbcDaoImpl<Building> {
         return getList(connection, sql);
     }
 
+    public Building getBuildingByBuildingId(int buildingId){
+        String sql = "SELECT * FROM building where building_id = ?";
+        return get(connection, sql, buildingId);
+    }
 }

@@ -5,6 +5,7 @@ import dao.daoInterface.JdbcDaoImpl;
 import model.relation.resident.ResidentCost;
 
 import java.sql.Connection;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -37,6 +38,12 @@ public class ResidentCostDao  extends JdbcDaoImpl<ResidentCost> {
         String sql = "SELECT * FROM resident_cost ";
         return getList(connection, sql);
     }
+
+    public List<ResidentCost> getCostsByTime(Date start, Date end){
+        String sql = "SELECT * FROM resident_cost where time > ? and time < ?";
+        return getList(connection, sql, start, end);
+    }
+
     private static void init(){
 
     }
