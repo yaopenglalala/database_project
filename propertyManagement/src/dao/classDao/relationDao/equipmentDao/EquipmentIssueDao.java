@@ -27,10 +27,26 @@ public class EquipmentIssueDao extends JdbcDaoImpl<EquipmentIssue> {
         return (update(connection, sql, repairId, issueId) != 0);
     }
 
+    public List<EquipmentIssue> getNotSolvedIssues(int buildingId){
+        String sql = "SELECT * FROM equipment_issue where building_id = ? and repair_id is null";
+        return getList(connection, sql, buildingId);
+    }
+
+    public List<EquipmentIssue> getSolvingIssues(int buildingId){
+        String sql = "SELECT * FROM equipment_issue where building_id = ? and repair_id is not null";
+        return getList(connection, sql, buildingId);
+    }
+
     public List<EquipmentIssue> getIssuesByBuildingId(int buildingId){
         String sql = "SELECT feedback_id, house_id, equipment_id, repair_id, type, description, time " +
                 "FROM HouseService natural join equipment_issue where building_id = ?";
         return getList(connection, sql, buildingId);
+    }
+
+    public List<EquipmentIssue> getIssuesByEquipId(int equipId){
+        String sql = "SELECT * " +
+                "FROM equipment_issue where equipment_id = ?";
+        return getList(connection, sql, equipId);
     }
 
     public List<EquipmentIssue> getIssuesByHouseId(int houseId){

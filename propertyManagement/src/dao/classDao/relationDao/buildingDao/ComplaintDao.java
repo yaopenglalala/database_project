@@ -52,6 +52,16 @@ public class ComplaintDao extends JdbcDaoImpl<Complaint> {
         return getList(connection, sql, type);
     }
 
+    public List<Complaint> getNotSolvedComplaint(){
+        String sql = "SELECT * FROM complaint where process is null";
+        return getList(connection, sql);
+    }
+
+    public List<Complaint> getSolvingComplaint(){
+        String sql = "SELECT * FROM complaint where process is not null";
+        return getList(connection, sql);
+    }
+
     public List<Complaint> getAllComplaints(){
         String sql = "SELECT * FROM complaint";
         return getList(connection, sql);

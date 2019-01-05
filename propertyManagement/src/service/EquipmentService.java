@@ -65,7 +65,11 @@ public class EquipmentService {
     }
 
     public List<IndoorEquipRepair> getInEquipRepair(IndoorEquipment equipment){
-        return inRepairDao.getRepairsByEquimentId(equipment.getEquipment_id());
+        return inRepairDao.getRepairsByEquipmentId(equipment.getEquipment_id());
+    }
+
+    public IndoorEquipRepair getInEquipRepairByRepairId(int repairId){
+        return inRepairDao.getRepairByRepairId(repairId);
     }
 
     public List<OutdoorEquipRepair> getOutEquipRepair(OutdoorEquipment outdoorEquipment){
@@ -94,6 +98,8 @@ public class EquipmentService {
 
     public int addInEquipRepair(IndoorEquipment equipment, float cost){
         if (indoorDao.getInEquipByEquipId(equipment.getEquipment_id()) == null) return 1;
+        equipment.setState(2);
+        indoorDao.updateIndoorEquipment(equipment);
         IndoorEquipRepair repair = new IndoorEquipRepair();
         repair.setEquipment_id(equipment.getEquipment_id());
         repair.setCost(cost);
@@ -105,6 +111,8 @@ public class EquipmentService {
 
     public int addOutEquipRepair(OutdoorEquipment equipment, float cost){
         if (outdoorDao.getOutEquipByEquipId(equipment.getEquipment_id()) == null) return 1;
+        equipment.setState(2);
+        outdoorDao.updateOutdoorEquipment(equipment);
         OutdoorEquipRepair repair = new OutdoorEquipRepair();
         repair.setEquipment_id(equipment.getEquipment_id());
         repair.setCost(cost);
@@ -113,12 +121,22 @@ public class EquipmentService {
         outRepairDao.addRepair(repair);
         return 0;
     }
-    
+
     public boolean modifyInEquipRepairState(IndoorEquipRepair repair, int state){
+        if (state == 0) {
+            IndoorEquipment equipment = indoorDao.getInEquipByEquipId(repair.getEquipment_id());
+            equipment.setState(0);
+            indoorDao.updateIndoorEquipment(equipment);
+        }
         return inRepairDao.modifyRepairState(repair.getRepair_id(), state);
     }
 
     public boolean modifyOutEquipRepairState(OutdoorEquipRepair repair, int state){
+        if (state == 0){
+            OutdoorEquipment equipment = outdoorDao.getOutEquipByEquipId(repair.getEquipment_id());
+            equipment.setState(0);
+            outdoorDao.updateOutdoorEquipment(equipment);
+        }
         return outRepairDao.modifyRepairState(repair.getRepair_id(), state);
     }
 }
