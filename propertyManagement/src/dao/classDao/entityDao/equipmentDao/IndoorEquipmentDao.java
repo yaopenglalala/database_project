@@ -3,6 +3,7 @@ package dao.classDao.entityDao.equipmentDao;
 import dao.JDBCUtil;
 import dao.daoInterface.JdbcDaoImpl;
 import model.entity.equipment.IndoorEquipment;
+import model.entity.house.Building;
 
 import java.sql.Connection;
 import java.sql.Statement;
@@ -43,21 +44,21 @@ public class IndoorEquipmentDao extends JdbcDaoImpl<IndoorEquipment> {
         return true;
     }
 
-    public IndoorEquipment getIndoorEquipmentId(Integer id){
+    public IndoorEquipment getInEquipByEquipId(Integer id){
         String sql = "SELECT * " +
                 "FROM indoor_equipment where equipment_id = ?";
         return get(connection, sql, id);
     }
 
     public boolean removeIndoorEquipment(int indoorEquipmentId){
-        if (getIndoorEquipmentId(indoorEquipmentId) == null) return false;
+        if (getInEquipByEquipId(indoorEquipmentId) == null) return false;
         String sql = "DELETE FROM indoor_equipment where equipment_id = ?";
         update(connection,sql,indoorEquipmentId);
         return true;
     }
 
     public boolean updateIndoorEquipment(IndoorEquipment indoorEquipment){
-        if (getIndoorEquipmentId(indoorEquipment.getEquipment_id()) == null) return false;
+        if (getInEquipByEquipId(indoorEquipment.getEquipment_id()) == null) return false;
         String sql = "UPDATE indoor_equipment SET state=? where equipment_id = ?";
         update(connection,sql,indoorEquipment.getState(),indoorEquipment.getEquipment_id());
         return true;
@@ -65,11 +66,17 @@ public class IndoorEquipmentDao extends JdbcDaoImpl<IndoorEquipment> {
 
     public List<IndoorEquipment> getAllIndoorEquipment(){
         String sql = "SELECT * " +
-                "FROM indoor_equipment ORDER BY equipment_id DESC";
+                "FROM indoor_equipment";
         return getList(connection, sql);
     }
 
+    public List<IndoorEquipment> getInEquipByState(Building building, int state){
+        String sql = "SELECT * FROM indoor_equipment where building_id = ? and state = ?";
+        return getList(connection, sql);
+    }
 
-
-
+    public List<IndoorEquipment> getInEquipByBuilding(Building building){
+        String sql = "SELECT * FROM indoor_equipment where building_id = ?";
+        return getList(connection, sql);
+    }
 }

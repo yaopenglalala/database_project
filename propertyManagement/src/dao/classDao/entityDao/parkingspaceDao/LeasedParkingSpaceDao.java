@@ -30,7 +30,7 @@ public class LeasedParkingSpaceDao extends JdbcDaoImpl<LeasedParkingSpace> {
 
 
     public boolean updateLeasedParkingSpace(LeasedParkingSpace leasedParkingSpace) {
-        //  if (getIndoorEquipmentId(indoorEquipment.getEquipment_id()) == null) return false;
+        //  if (getInEquipByEquipId(indoorEquipment.getEquipment_id()) == null) return false;
         String sql = "UPDATE leased_parking_space SET parking_state=? where parking_space_id = ?";
         update(connection, sql, leasedParkingSpace.getParking_state(), leasedParkingSpace.getParking_space_id());
         return true;
