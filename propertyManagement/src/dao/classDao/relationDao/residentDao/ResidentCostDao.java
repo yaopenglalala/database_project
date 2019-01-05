@@ -26,7 +26,7 @@ public class ResidentCostDao  extends JdbcDaoImpl<ResidentCost> {
 
     public boolean modifyState(int costId, int state){
         String sql = "UPDATE resident_cost SET state = ? where cost_id = ?";
-        return update(connection, sql, costId, state) != 0;
+        return update(connection, sql, state, costId) != 0;
     }
 
     public List<ResidentCost> getCostsByResidentId(int residentId){

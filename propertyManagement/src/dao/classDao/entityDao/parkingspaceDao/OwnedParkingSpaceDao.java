@@ -34,7 +34,7 @@ public class OwnedParkingSpaceDao extends JdbcDaoImpl<OwnedParkingSpace> {
     }*/
 
     public List<OwnedParkingSpace> getOwnedParkingSpacesByCommunity(Community community) {
-        String sql = "SELECT * FROM owned_parking_space where community = ?";
+        String sql = "SELECT * FROM owned_parking_space where community_id = ?";
         return getList(connection, sql, community.getCommunityId());
     }
 

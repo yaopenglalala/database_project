@@ -5,8 +5,11 @@ import model.entity.house.House;
 import model.entity.parkingspace.LeasedParkingSpace;
 import model.entity.parkingspace.OwnedParkingSpace;
 import model.entity.parkingspace.TemporaryParkingSpace;
+import model.relation.parking.TemporaryParkingRecord;
+import model.relation.resident.ResidentCost;
 import service.HouseService;
 import service.ParkingService;
+import service.PaymentService;
 import service.ResidentService;
 
 import java.util.Date;
@@ -22,10 +25,7 @@ public class UI {
         while (true) {
 //0
             while (true) {
-                System.out.println("1.房屋信息管理");
-                System.out.println("2.车位信息管理");
-                System.out.println("3.设备信息管理");
-                System.out.println("4.集团收支管理");
+                floor_1();
                 String input = Input();
                 if (!(input.equals("1") || input.equals("2") || input.equals("3") || input.equals("4"))) {
                     System.out.println("已经最上层");
@@ -34,8 +34,7 @@ public class UI {
                 if (input.equals("1")) {
 //1
                     while (true) {
-                        System.out.println("1.闲置房查询");
-                        System.out.println("2.住户信息查询");
+                        floor_2();
                         input = Input();
                         if (!(input.equals("1") || input.equals("2"))) {
                             System.out.println("已返回，请重新输入");
@@ -124,6 +123,9 @@ public class UI {
                         if (input.equals("2")) {
                             ResidentService residentService = new ResidentService();
                             List<Resident> residents = residentService.getAllResidents();
+                            for (int i = 0; i < residents.size(); i++) {
+                                System.out.println("ID：" + residents.get(i).getResident_id() + "  姓名：" + residents.get(i).getName() + "  电话：" + residents.get(i).getTel());
+                            }
                             /*得到所有住户，展示其每月支出和代缴费用
                              List<>
                              ID+1->
@@ -131,33 +133,43 @@ public class UI {
                             * */
                             //1.2.1
                             while (true) {
-                                System.out.println("输入用户ID（此处可以为0），展示具体代缴款额");
+                                System.out.println("输入用户ID，展示具体代缴款额");
                                 int inputInteger = Integer.parseInt(Input());
+                                if (!(inputInteger > 0 && inputInteger <= residents.size())) {
+                                    break;
+                                }
+                                PaymentService paymentService = new PaymentService();
+                                List<ResidentCost> residentCosts = paymentService.getResidentCostByResidentId(inputInteger);
+                                for (int i = 0; i < residentCosts.size(); i++) {
+                                    System.out.println("编号ID：" + residentCosts.get(i).getCost_id() + " 描述：" + residentCosts.get(i).getDescription() + " 时间：" + residentCosts.get(i).getTime() + " 金额:" + residentCosts.get(i).getCost() + " 支付情况:" + residentCosts.get(i).getState());
+                                }
                                 /*List<>
                                 * 1->
                                 * 2->
                                 * */
-                                System.out.println("输入代缴编号，完成缴费");
+                                System.out.println("输入代缴编号ID，完成缴费");
                                 inputInteger = Integer.parseInt(Input());
                                 if (inputInteger == 0) //inputInteger不在0-size之间
                                     break;
                                 /*
                                 * 缴费
                                 * */
+                                paymentService.pay(inputInteger);
+                                System.out.println("缴费成功");
                             }
                         }
                     }
                 }
                 if (input.equals("2")) {
 //2
-                     HouseService houseService =new HouseService();
+                    HouseService houseService = new HouseService();
                     List<Community> communities = houseService.getCommunitys();
-                    for(int i=0;i<communities.size();i++){
-                        System.out.println("小区编号："+(i+1)+"小区名称："+communities.get(i).getName()+" ");
+                    for (int i = 0; i < communities.size(); i++) {
+                        System.out.println("小区编号：" + (i + 1) + "小区名称：" + communities.get(i).getName() + " ");
                     }
                     System.out.println("输入小区号");
                     int inputIN = Integer.parseInt(Input());
-                    Community community = communities.get(inputIN-1);
+                    Community community = communities.get(inputIN - 1);
                     while (true) {
                         ParkingService parkingService = new ParkingService();
                         /**
@@ -166,9 +178,7 @@ public class UI {
                          租用车位信息
                          购买车位信息
                          */
-                        System.out.println("1.临时车位信息");
-                        System.out.println("2.租用车位信息");
-                        System.out.println("3.购买车位信息");
+                        floor_3();
                         input = Input();
                         if (!(input.equals("1") || input.equals("2") || input.equals("3"))) {
                             System.out.println("已返回，请重新输入");
@@ -176,12 +186,12 @@ public class UI {
                         }
                         if (input.equals("1")) {
 //2.1
-                         //   List<LeasedParkingSpace> leasedParkingSpacesEmpty = parkingService.getEmptyLeasedParkingSpaces(community);
+                            //   List<LeasedParkingSpace> leasedParkingSpacesEmpty = parkingService.getEmptyLeasedParkingSpaces(community);
                             while (true) {
                                 List<TemporaryParkingSpace> temporaryParkingSpaces = parkingService.getAllTempPakingSpaces(community);
-                                System.out.println("车位编号 "+ "描述" + "状态");
-                                for(int i=0;i<temporaryParkingSpaces.size();i++){
-                                    System.out.println((i+1)+" "+temporaryParkingSpaces.get(i).getDescription()+"  "+temporaryParkingSpaces.get(i).getParking_state());
+                                System.out.println("车位编号 " + "描述" + "状态");
+                                for (int i = 0; i < temporaryParkingSpaces.size(); i++) {
+                                    System.out.println((i + 1) + " " + temporaryParkingSpaces.get(i).getDescription() + "  " + temporaryParkingSpaces.get(i).getParking_state());
                                 }
 
                               /*  System.out.println("1.临时车位借");
@@ -192,20 +202,20 @@ public class UI {
                                     break;
                                 }*/
 //2.1.1
-                               System.out.println("选择状态为0的默认停车，为1的为还车");
-                               int inputInteger = Integer.parseInt(Input());
+                                System.out.println("选择状态为0的默认停车，为1的为还车");
+                                int inputInteger = Integer.parseInt(Input());
                                 /*判断*/
-                                if(!(inputInteger>0&&inputInteger<=temporaryParkingSpaces.size())){
+                                if (!(inputInteger > 0 && inputInteger <= temporaryParkingSpaces.size())) {
                                     break;
                                 }//来进车
-                                if(temporaryParkingSpaces.get(inputInteger-1).getParking_state()==0){
+                                if (temporaryParkingSpaces.get(inputInteger - 1).getParking_state() == 0) {
                                     System.out.println("输入车牌号");
                                     input = Input();
-                                    parkingService.tempParking(temporaryParkingSpaces.get(inputInteger-1),input);
+                                    parkingService.tempParking(temporaryParkingSpaces.get(inputInteger - 1), input);
                                 }//出车
-                                if(temporaryParkingSpaces.get(inputInteger-1).getParking_state()==1){
+                                if (temporaryParkingSpaces.get(inputInteger - 1).getParking_state() == 1) {
                                     System.out.println("输入花费");
-                                    parkingService.tempLeaving(temporaryParkingSpaces.get(inputInteger-1),(float)Integer.parseInt(Input()) );
+                                    parkingService.tempLeaving(temporaryParkingSpaces.get(inputInteger - 1), (float) Integer.parseInt(Input()));
                                 }
                                 break;
                             }
@@ -219,14 +229,14 @@ public class UI {
                          * */
                             while (true) {
                                 List<LeasedParkingSpace> leasedParkingSpaces = parkingService.getAllLeasedParkingSpaces(community);
-                                System.out.println("车位编号 "+ "描述" + "状态");
-                                for(int i=0;i<leasedParkingSpaces.size();i++){
-                                    System.out.println((i+1)+" "+leasedParkingSpaces.get(i).getDescription()+"  "+leasedParkingSpaces.get(i).getParking_state());
+                                System.out.println("车位编号 " + "描述" + "状态");
+                                for (int i = 0; i < leasedParkingSpaces.size(); i++) {
+                                    System.out.println((i + 1) + " " + leasedParkingSpaces.get(i).getDescription() + "  " + leasedParkingSpaces.get(i).getParking_state());
                                 }
 
                                 System.out.println("租用车位请选择编号");
                                 int inputInteger = Integer.parseInt(Input());
-                                if (!(inputInteger>0||inputInteger<=leasedParkingSpaces.size())) {//编号不在0-size之间
+                                if (!(inputInteger > 0 && inputInteger <= leasedParkingSpaces.size())) {//编号不在0-size之间
                                     break;
                                 }
                                 System.out.println("输入租车位者ID（此处可以为0）");
@@ -244,9 +254,9 @@ public class UI {
                                 }
                                 Date dateOne = new Date();
                                 Date dateTwo = new Date();
-                                dateTwo.setMonth(dateTwo.getMonth()+inputInteger3);
-                             int x=   parkingService.rentParkingSpace(residentService.getResidentByResidentId(inputInteger2),leasedParkingSpaces.get(inputInteger-1),dateOne,dateTwo);
-                                if(x==1){
+                                dateTwo.setMonth(dateTwo.getMonth() + inputInteger3);
+                                int x = parkingService.rentParkingSpace(residentService.getResidentByResidentId(inputInteger2), leasedParkingSpaces.get(inputInteger - 1), dateOne, dateTwo);
+                                if (x == 1) {
                                     System.out.println("正有人使用，租不了");
                                 }
                                 /**插入
@@ -272,7 +282,7 @@ public class UI {
                                 ;
                                 System.out.println("购买车位请选择编号");
                                 int inputInteger = Integer.parseInt(Input());
-                                if (!(inputInteger>0||inputInteger<=ownedParkingSpaces.size())) {//编号不在0-size之间
+                                if (!(inputInteger > 0 && inputInteger <= ownedParkingSpaces.size())) {//编号不在0-size之间
                                     break;
                                 }
                                 System.out.println("输入买车位者ID（此处可以为0）");
@@ -287,7 +297,7 @@ public class UI {
                                  * 买车位信息 插入 （并记录车位管理费用
                                  *
                                  */
-                                 parkingService.purchaseParkingSpace(residentService.getResidentByResidentId(inputInteger2),ownedParkingSpaces.get(inputInteger-1),50000);
+                                parkingService.purchaseParkingSpace(residentService.getResidentByResidentId(inputInteger2), ownedParkingSpaces.get(inputInteger - 1), 50000);
                                 break;
                             }
                         }
@@ -296,10 +306,7 @@ public class UI {
                 if (input.equals("3")) {
 //3
                     while (true) {
-                        System.out.println("1.室外设备记录");
-                        System.out.println("2.室内设备记录");
-                        System.out.println("3.用户提出设备问题记录");
-                        System.out.println("4.投诉");
+                        floor_4();
                         input = Input();
                         if (!(input.equals("1") || input.equals("2") || input.equals("3") || input.equals("4"))) {
                             System.out.println("已返回，请重新输入");
@@ -356,11 +363,8 @@ public class UI {
                      *
                      */
                     while (true) {
-                        System.out.println("1.临时车费缴纳");
-                        System.out.println("2.用户缴纳");
-                        System.out.println("3.维修费用");
-                        System.out.println("4.其他费用");
-                        System.out.println("5.每月收费一键更新");
+                        PaymentService paymentService= new PaymentService();
+                        floor_5();
                         input = Input();
                         if (!(input.equals("1") || input.equals("2") || input.equals("3") || input.equals("4") || input.equals("5"))) {
                             System.out.println("已返回，请重新输入");
@@ -368,6 +372,15 @@ public class UI {
                         }
                         if (input.equals("1")) {
                             //打印临时车费缴纳记录，时间由最近到之前
+                         List<TemporaryParkingRecord> temporaryParkingRecords =    paymentService.getTemParkingRecordCost();
+                         System.out.println("停车位ID  "+"车牌号  "+"起始时间  "+"结束时间  "+"钱  ");
+                         for(int i=0;i<temporaryParkingRecords.size();i++){
+                             System.out.println(temporaryParkingRecords.get(i).getParking_space_id()+"   "+
+                                     temporaryParkingRecords.get(i).getCar_id()+"   "+
+                                     temporaryParkingRecords.get(i).getStart_time()+"   "+
+                                     temporaryParkingRecords.get(i).getEnd_time()+"   "+
+                                     temporaryParkingRecords.get(i).getCost()+"   ");
+                         }
                         }
                         if (input.equals("2")) {
                             //打印用户缴纳记录，时间由最近到之前
@@ -392,5 +405,43 @@ public class UI {
         Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine();
         return input;
+    }
+
+    public static void floor_1() {
+        System.out.println("====================================");
+        System.out.println("1.房屋信息管理");
+        System.out.println("2.车位信息管理");
+        System.out.println("3.设备信息管理");
+        System.out.println("4.集团收支管理");
+    }
+
+    public static void floor_2() {
+        System.out.println("====================================");
+        System.out.println("1.闲置房查询");
+        System.out.println("2.住户信息查询");
+    }
+
+    public static void floor_3() {
+        System.out.println("====================================");
+        System.out.println("1.临时车位信息");
+        System.out.println("2.租用车位信息");
+        System.out.println("3.购买车位信息");
+    }
+
+    public static void floor_4() {
+        System.out.println("====================================");
+        System.out.println("1.室外设备记录");
+        System.out.println("2.室内设备记录");
+        System.out.println("3.用户提出设备问题记录");
+        System.out.println("4.投诉");
+    }
+
+    public static void floor_5() {
+        System.out.println("====================================");
+        System.out.println("1.临时车费缴纳");
+        System.out.println("2.用户缴纳");
+        System.out.println("3.维修费用");
+        System.out.println("4.其他费用");
+        System.out.println("5.每月收费一键更新");
     }
 }

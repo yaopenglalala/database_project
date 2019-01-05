@@ -15,6 +15,7 @@ import model.relation.parking.LeasedParkingRecord;
 import model.relation.parking.OwnedParkingRecord;
 import model.relation.parking.TemporaryParkingRecord;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -59,12 +60,13 @@ public class ParkingService {
     }
 
     public List<OwnedParkingSpace> getEmptyOwnedParkingSpaces(Community community){
+        List<OwnedParkingSpace> res = new ArrayList<>();
         List<OwnedParkingSpace> allSpaces = ownedDao.getOwnedParkingSpacesByCommunity(community);
         for (OwnedParkingSpace space : allSpaces){
-            if (ownedRecordDao.getRecordBySpaceId(space.getParking_space_id()) != null )
-                allSpaces.remove(space);
+            if (ownedRecordDao.getRecordBySpaceId(space.getParking_space_id()) == null )
+                res.add(space);
         }
-        return allSpaces;
+        return res;
     }
 
     /**
@@ -105,7 +107,7 @@ public class ParkingService {
             record.setParking_space_id(space.getParking_space_id());
             record.setEnd_time(new Date());
             record.setCost(cost);
-            tempRecordDao.addRecord(record);
+            tempRecordDao.updateRecord(record);
         }
         return 0;
     }
