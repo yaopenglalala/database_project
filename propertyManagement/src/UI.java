@@ -2,9 +2,14 @@ import model.entity.Resident;
 import model.entity.house.Building;
 import model.entity.house.Community;
 import model.entity.house.House;
+import model.entity.parkingspace.LeasedParkingSpace;
+import model.entity.parkingspace.OwnedParkingSpace;
+import model.entity.parkingspace.TemporaryParkingSpace;
 import service.HouseService;
+import service.ParkingService;
 import service.ResidentService;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
@@ -145,7 +150,16 @@ public class UI {
                 }
                 if (input.equals("2")) {
 //2
+                     HouseService houseService =new HouseService();
+                    List<Community> communities = houseService.getCommunitys();
+                    for(int i=0;i<communities.size();i++){
+                        System.out.print("小区编号："+(i+1)+"小区名称："+communities.get(i).getName());
+                    }
+                    System.out.println("输入小区号");
+                    int inputIN = Integer.parseInt(Input());
+                    Community community = communities.get(inputIN-1);
                     while (true) {
+                        ParkingService parkingService = new ParkingService();
                         /**
                          * List<> 3个记录
                          临时车位信息
@@ -162,44 +176,36 @@ public class UI {
                         }
                         if (input.equals("1")) {
 //2.1
+                         //   List<LeasedParkingSpace> leasedParkingSpacesEmpty = parkingService.getEmptyLeasedParkingSpaces(community);
                             while (true) {
-                                System.out.println("1.临时车位借");
+                                List<TemporaryParkingSpace> temporaryParkingSpaces = parkingService.getAllTempPakingSpaces(community);
+                                System.out.println("车位编号 "+ "描述" + "状态");
+                                for(int i=0;i<temporaryParkingSpaces.size();i++){
+                                    System.out.println((i+1)+" "+temporaryParkingSpaces.get(i).getDescription()+"  "+temporaryParkingSpaces.get(i).getParking_state());
+                                }
+
+                              /*  System.out.println("1.临时车位借");
                                 System.out.println("2.临时车位还");
                                 input = Input();
                                 if (!(input.equals("1") || input.equals("2"))) {
                                     System.out.println("已返回，请重新输入");
                                     break;
-                                }
+                                }*/
 //2.1.1
-                                if (input.equals("1")) {
-                         /*List<>
-                         *1->
-                         *2->
-                         * 打印剩余车位
-                         * */
-                                    System.out.println("输入要租的车位编码");
-                                    int inputInteger = Integer.parseInt(Input());
-                                    if (false) {
-                                        break;
-                                    }
-                                    /**输入车牌
-                                     * 记录数据
-                                     */
-                                }
-                                if (input.equals("2")) {
-                         /*List<>
-                         *1->
-                         *2->
-                         * 打印已借车位
-                         * */
-                                    System.out.println("输入要还的车位编码");
-                                    int inputInteger = Integer.parseInt(Input());
-                                    if (false) {
-                                        break;
-                                    }
-                                    /**计算金额
-                                     * 更新时间
-                                     */
+                               System.out.println("选择状态为0的默认停车，为1的为还车");
+                               int inputInteger = Integer.parseInt(Input());
+                                /*判断*/
+                                if(!(inputInteger>0||inputInteger<=temporaryParkingSpaces.size())){
+                                    break;
+                                }//来进车
+                                if(temporaryParkingSpaces.get(inputInteger-1).getParking_state()==0){
+                                    System.out.println("输入车牌号");
+                                    input = Input();
+                                    parkingService.tempParking(temporaryParkingSpaces.get(inputInteger-1),input);
+                                }//出车
+                                if(temporaryParkingSpaces.get(inputInteger-1).getParking_state()==1){
+                                    System.out.println("输入花费");
+                                    parkingService.addTempParkingRecord(temporaryParkingSpaces.get(inputInteger-1),(float)Integer.parseInt(Input()) )
                                 }
                                 break;
                             }
@@ -212,9 +218,15 @@ public class UI {
                          * 打印剩余车位
                          * */
                             while (true) {
+                                List<LeasedParkingSpace> leasedParkingSpaces = parkingService.getAllLeasedParkingSpaces(community);
+                                System.out.println("车位编号 "+ "描述" + "状态");
+                                for(int i=0;i<leasedParkingSpaces.size();i++){
+                                    System.out.println((i+1)+" "+leasedParkingSpaces.get(i).getDescription()+"  "+leasedParkingSpaces.get(i).getParking_state());
+                                }
+
                                 System.out.println("租用车位请选择编号");
                                 int inputInteger = Integer.parseInt(Input());
-                                if (false) {//编号不在0-size之间
+                                if (!(inputInteger>0||inputInteger<=leasedParkingSpaces.size())) {//编号不在0-size之间
                                     break;
                                 }
                                 System.out.println("输入租车位者ID（此处可以为0）");
@@ -230,8 +242,15 @@ public class UI {
                                 if (inputInteger3 <= 0) {//编号不在0-size之间
                                     break;
                                 }
+                                Date dateOne = new Date();
+                                Date dateTwo = new Date();
+                                dateTwo.setMonth(dateTwo.getMonth()+inputInteger3);
+                             int x=   parkingService.rentParkingSpace(residentService.getResidentByResidentId(inputInteger2),leasedParkingSpaces.get(inputInteger-1),dateOne,dateTwo);
+                                if(x==1){
+                                    System.out.println("正有人使用，租不了");
+                                }
                                 /**插入
-                                 * 租车位信息 插入 （并记录车位管理费用
+                                 * 租车位信息 插入
                                  * 租车起始时间，结束时间
                                  */
                                 break;
@@ -244,6 +263,13 @@ public class UI {
                          *2->
                          * 打印剩余车位
                          * */
+                            while (true) {
+                                List<OwnedParkingSpace> ownedParkingSpaces = parkingService.getEmptyOwnedParkingSpaces(community);
+                                System.out.println("车位编号 " + "描述" + "空余车位如下");
+                                for (int i = 0; i < ownedParkingSpaces.size(); i++) {
+                                    System.out.println((i + 1) + " " + ownedParkingSpaces.get(i).getDescription() + "  ");
+                                }
+                                ;
                                 System.out.println("购买车位请选择编号");
                                 int inputInteger = Integer.parseInt(Input());
                                 if (true) {//编号不在0-size之间
@@ -261,7 +287,8 @@ public class UI {
                                  * 买车位信息 插入 （并记录车位管理费用
                                  *
                                  */
-
+                                break;
+                            }
                         }
                     }
                 }
