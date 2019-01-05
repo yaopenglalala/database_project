@@ -44,7 +44,7 @@ public class HouseService {
         List<House> res = new ArrayList<>();
         List<Building> buildings = getBuildings(community);
         for (Building building : buildings) {
-            res.addAll(getHouses(building));
+            res.addAll(getEmptyHousesByBuilding(building));
         }
         return res;
     }
@@ -56,7 +56,7 @@ public class HouseService {
             if (housePurchaseRecordDao.getRecordByHouseId(house.getHouse_id()) == null)
                 res.add(house);
         }
-        return houses;
+        return res;
     }
 
     /**
