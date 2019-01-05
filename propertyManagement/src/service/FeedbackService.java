@@ -5,8 +5,8 @@ import dao.classDao.relationDao.equipmentDao.EquipmentIssueDao;
 import model.entity.equipment.IndoorEquipment;
 import model.entity.house.Building;
 import model.entity.house.House;
+import model.relation.building.Complaint;
 import model.relation.equipment.EquipmentIssue;
-import model.relation.equipment.IndoorEquipRepair;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -86,7 +86,34 @@ public class FeedbackService {
     }
 
 
-//    public int addComplaint(House house, ){
-//
-//    }
+    public boolean addComplaint(House house, int type, String description){
+        Complaint complaint = new Complaint();
+        complaint.setHouse_id(house.getHouse_id());
+        complaint.setType(type);
+        complaint.setDescription(description);
+        complaint.setProcess(null);
+        complaint.setDate(new Date());
+        return complaintDao.addComplaint(complaint);
+    }
+
+    public List<Complaint> getComplaintByHouse(House house){
+        return complaintDao.getComplaintsByHouseId(house.getHouse_id());
+    }
+
+    public List<Complaint> getComplaintByType(int type){
+        return complaintDao.getComplaintsByType(type);
+    }
+
+    public List<Complaint> getNotSolvedComplaint(){
+        return complaintDao.getNotSolvedComplaint();
+    }
+
+    public List<Complaint> getSolvingComplaint(){
+        return complaintDao.getSolvingComplaint();
+    }
+
+    public boolean modifyComplaintProcess(Complaint complaint, String process){
+        complaint.setProcess(process);
+        return complaintDao.modifyComplaint(complaint);
+    }
 }
