@@ -1,16 +1,20 @@
 import model.entity.Resident;
+import model.entity.equipment.IndoorEquipment;
+import model.entity.equipment.OutdoorEquipment;
 import model.entity.house.Building;
 import model.entity.house.Community;
 import model.entity.house.House;
 import model.entity.parkingspace.LeasedParkingSpace;
 import model.entity.parkingspace.OwnedParkingSpace;
 import model.entity.parkingspace.TemporaryParkingSpace;
+import model.relation.PropertyRecord;
+import model.relation.equipment.IndoorEquipCheck;
+import model.relation.equipment.IndoorEquipRepair;
+import model.relation.equipment.OutdoorEquipCheck;
+import model.relation.equipment.OutdoorEquipRepair;
 import model.relation.parking.TemporaryParkingRecord;
 import model.relation.resident.ResidentCost;
-import service.HouseService;
-import service.ParkingService;
-import service.PaymentService;
-import service.ResidentService;
+import service.*;
 
 import java.util.Date;
 import java.util.List;
@@ -305,6 +309,7 @@ public class UI {
                 }
                 if (input.equals("3")) {
 //3
+
                     while (true) {
                         floor_4();
                         input = Input();
@@ -312,16 +317,70 @@ public class UI {
                             System.out.println("已返回，请重新输入");
                             break;
                         }
+                        HouseService houseService = new HouseService();
+                        EquipmentService equipmentService = new EquipmentService();
+                        List<Community> communities = houseService.getCommunitys();
+                        for (int i = 0; i < communities.size(); i++) {
+                            System.out.println("小区编号：" + (i + 1) + "小区名称：" + communities.get(i).getName() + " ");
+                        }
+                        System.out.println("输入小区号");
+                        int inputIN = Integer.parseInt(Input());
+                        Community community = communities.get(inputIN - 1);
                         if (input.equals("1")) {
 //3.1
                         /*List<>搜有设备目前信息，好坏，（维修中待定）
                         * 1->
                         * 2->
                         * */
-                            System.out.println("具体设备情况，输入编号");
+                            List<OutdoorEquipment> outdoorEquipments = equipmentService.getAllOutdoorEquipByCommunity(community);
+                            System.out.println("设备编号  " + "设备类型  " + "描述  " + "状态  ");
+                            for (int i = 0; i < outdoorEquipments.size(); i++) {
+                                System.out.println((i + 1) + "  " +
+                                        outdoorEquipments.get(i).getType() + "   " +
+                                        outdoorEquipments.get(i).getDescription() + "   " + outdoorEquipments.get(i).getState());
+                            }
+                            System.out.println("具体设备情况，输入设备编号");
                             int inputInteger = Integer.parseInt(Input());
-                            if (true) {//编号不在0-size之间
+                            if (!(inputInteger > 0 && inputInteger <= outdoorEquipments.size())) {//编号不在0-size之间
                                 break;
+                            }
+                            System.out.println("1.查询");
+                            System.out.println("2.修理");
+                            int inputInteger2 = Integer.parseInt(Input());
+                            if (!(inputInteger2 == 1 || inputInteger2 == 2)) {
+                                                           }
+                            if (inputInteger2 == 1) {
+                                List<OutdoorEquipCheck> outdoorEquipChecks = equipmentService.getOutEquipCheck(outdoorEquipments.get(inputInteger-1));
+                                System.out.println("编号"+"  状态"+"  时间");
+                                for(int i=0;i<outdoorEquipChecks.size();i++){
+                                System.out.println((i+1)+"   "+
+                                                   outdoorEquipChecks.get(i).getState()+"  "+
+                                                    outdoorEquipChecks.get(i).getTime());
+                                }
+                                System.out.print("输入1开始检查设备，其他返回上层");
+                                int center = Integer.parseInt(Input());
+                                if(center==1){
+                                 System.out.println("输入状态，0好，1坏");
+                                    center = Integer.parseInt(Input());
+                                    equipmentService.addOutEquipCheck(outdoorEquipments.get(inputInteger-1),center);
+                                }
+                            }
+                            if (inputInteger2 == 2) {
+                                List<OutdoorEquipRepair> outdoorEquipRepairs =equipmentService.getOutEquipRepair(outdoorEquipments.get(inputInteger-1));
+                                System.out.println("编号"+"  状态"+"  花费"+"  时间");
+                                for(int i=0;i<outdoorEquipRepairs.size();i++){
+                                    System.out.println((i+1)+"   "+
+                                            outdoorEquipRepairs.get(i).getState()+"  "+
+                                            outdoorEquipRepairs.get(i).getCost()+"   "+
+                                            outdoorEquipRepairs.get(i).getTime());
+                                }
+                                System.out.print("输入设备编号使其修好，输入0新建维修，输入其他无变化");
+                                int center = Integer.parseInt(Input());
+                                if(center==0){
+                                    equipmentService.addOutEquipRepair(outdoorEquipments.get(inputInteger-1),10);
+                                }else {
+                                    equipmentService.modifyOutEquipRepairState(outdoorEquipRepairs.get(inputInteger-1),0);
+                                }
                             }
                             /**
                              *根据Id返回维修记录
@@ -330,7 +389,63 @@ public class UI {
                         }
                         if (input.equals("2")) {
 //3.2
-                            //同上
+                           List<Building> buildings =houseService.getBuildings(community);
+                            for (int i = 0; i < buildings.size(); i++) {
+                                System.out.println("楼编号：" + (i + 1) + "楼名称：" + buildings.get(i).getName() + " ");
+                            }
+                            System.out.println("输入楼号");
+                             inputIN = Integer.parseInt(Input());
+                            Building building = buildings.get(inputIN - 1);
+                             List<IndoorEquipment> indoorEquipments =equipmentService.getAllIndoorEquipByBuilding(building);
+                            System.out.println("设备编号  " + "设备类型  " + "描述  " + "状态  ");
+                            for (int i = 0; i < indoorEquipments.size(); i++) {
+                                System.out.println((i + 1) + "  " +
+                                        indoorEquipments.get(i).getType() + "   " +
+                                        indoorEquipments.get(i).getDescription() + "   " + indoorEquipments.get(i).getState());
+                            }
+                            System.out.println("具体设备情况，输入设备编号");
+                            int inputInteger = Integer.parseInt(Input());
+                            if (!(inputInteger > 0 && inputInteger <= indoorEquipments.size())) {//编号不在0-size之间
+                                break;
+                            }
+                            System.out.println("1.查询");
+                            System.out.println("2.修理");
+                            int inputInteger2 = Integer.parseInt(Input());
+                            if (!(inputInteger2 == 1 || inputInteger2 == 2)) {
+                            }
+                            if(inputInteger2==1){
+                                List<IndoorEquipCheck> indoorEquipChecks = equipmentService.getInEquipCheck(indoorEquipments.get(inputInteger-1));
+                                System.out.println("编号"+"  状态"+"  时间");
+                                for(int i=0;i<indoorEquipChecks.size();i++){
+                                    System.out.println((i+1)+"   "+
+                                            indoorEquipChecks.get(i).getState()+"  "+
+                                            indoorEquipChecks.get(i).getTime());
+                                }
+                                System.out.print("输入1开始检查设备，其他返回上层");
+                                int center = Integer.parseInt(Input());
+                                if(center==1){
+                                    System.out.println("输入状态，0好，1坏");
+                                    center = Integer.parseInt(Input());
+                                    equipmentService.addInEquipCheck(indoorEquipments.get(inputInteger-1),center);
+                                }
+                            }
+                            if (inputInteger2 == 2) {
+                                List<IndoorEquipRepair> indoorEquipRepairs =equipmentService.getInEquipRepair(indoorEquipments.get(inputInteger-1));
+                                System.out.println("编号"+"  状态"+"  花费"+"  时间");
+                                for(int i=0;i<indoorEquipRepairs.size();i++){
+                                    System.out.println((i+1)+"   "+
+                                            indoorEquipRepairs.get(i).getState()+"  "+
+                                            indoorEquipRepairs.get(i).getCost()+"   "+
+                                            indoorEquipRepairs.get(i).getTime());
+                                }
+                                System.out.print("输入设备编号使其修好，输入0新建维修，输入其他无变化");
+                                int center = Integer.parseInt(Input());
+                                if(center==0){
+                                    equipmentService.addInEquipRepair(indoorEquipments.get(inputInteger-1),10);
+                                }else {
+                                    equipmentService.modifyInEquipRepairState(indoorEquipRepairs.get(inputInteger-1),0);
+                                }
+                            }
                         }
                         if (input.equals("3")) {
 //3.3
@@ -363,7 +478,7 @@ public class UI {
                      *
                      */
                     while (true) {
-                        PaymentService paymentService= new PaymentService();
+                        PaymentService paymentService = new PaymentService();
                         floor_5();
                         input = Input();
                         if (!(input.equals("1") || input.equals("2") || input.equals("3") || input.equals("4") || input.equals("5"))) {
@@ -372,26 +487,44 @@ public class UI {
                         }
                         if (input.equals("1")) {
                             //打印临时车费缴纳记录，时间由最近到之前
-                         List<TemporaryParkingRecord> temporaryParkingRecords =    paymentService.getTemParkingRecordCost();
-                         System.out.println("停车位ID  "+"车牌号  "+"起始时间  "+"结束时间  "+"钱  ");
-                         for(int i=0;i<temporaryParkingRecords.size();i++){
-                             System.out.println(temporaryParkingRecords.get(i).getParking_space_id()+"   "+
-                                     temporaryParkingRecords.get(i).getCar_id()+"   "+
-                                     temporaryParkingRecords.get(i).getStart_time()+"   "+
-                                     temporaryParkingRecords.get(i).getEnd_time()+"   "+
-                                     temporaryParkingRecords.get(i).getCost()+"   ");
-                         }
+                            List<TemporaryParkingRecord> temporaryParkingRecords = paymentService.getTemParkingRecordCost();
+                            System.out.println("停车位ID  " + "车牌号  " + "起始时间  " + "结束时间  " + "钱  ");
+                            for (int i = 0; i < temporaryParkingRecords.size(); i++) {
+                                System.out.println(temporaryParkingRecords.get(i).getParking_space_id() + "   " +
+                                        temporaryParkingRecords.get(i).getCar_id() + "   " +
+                                        temporaryParkingRecords.get(i).getStart_time() + "   " +
+                                        temporaryParkingRecords.get(i).getEnd_time() + "   " +
+                                        temporaryParkingRecords.get(i).getCost() + "   ");
+                            }
                         }
                         if (input.equals("2")) {
                             //打印用户缴纳记录，时间由最近到之前
                             List<ResidentCost> residentCosts = paymentService.getResidentCost();
-                            System.out.println("停车位ID  "+"车牌号  "+"起始时间  "+"结束时间  "+"钱  ");
+                            System.out.println("花费ID  " + "用户ID  " + "描述  " + "时间  " + "钱  " + "  状态（0已缴费，1未交费）");
+                            for (int i = 0; i < residentCosts.size(); i++) {
+                                System.out.println(residentCosts.get(i).getCost_id() + "   " +
+                                        residentCosts.get(i).getResident_id() + "   " +
+                                        residentCosts.get(i).getDescription() + "   " +
+                                        residentCosts.get(i).getTime() + "   " +
+                                        residentCosts.get(i).getCost() + "   " +
+                                        residentCosts.get(i).getState());
+                            }
                         }
                         if (input.equals("3")) {
                             //打印维修记录，时间由最近到之前
                         }
                         if (input.equals("4")) {
                             //打印其他记录，时间由最近到之前
+                            List<PropertyRecord> propertyRecords = paymentService
+                                    .getPropertyRecordCost();
+                            System.out.println("ID  " + "收入或支出  " + "钱  " + "描述  " + "  时间");
+                            for (int i = 0; i < propertyRecords.size(); i++) {
+                                System.out.println(propertyRecords.get(i).getOrder_id() + "   " +
+                                        propertyRecords.get(i).getType() + "   " +
+                                        propertyRecords.get(i).getAmount() + "   " +
+                                        propertyRecords.get(i).getDescription() + "   " +
+                                        propertyRecords.get(i).getTime() + "   ");
+                            }
                         }
                         if (input.equals("5")) {
                             //月初，更新物业收费和车位收费

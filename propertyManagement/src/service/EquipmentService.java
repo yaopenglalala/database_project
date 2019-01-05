@@ -103,7 +103,7 @@ public class EquipmentService {
         return 0;
     }
 
-    public int addInEquipRepair(OutdoorEquipment equipment, float cost){
+    public int addOutEquipRepair(OutdoorEquipment equipment, float cost){
         if (outdoorDao.getOutEquipByEquipId(equipment.getEquipment_id()) == null) return 1;
         OutdoorEquipRepair repair = new OutdoorEquipRepair();
         repair.setEquipment_id(equipment.getEquipment_id());
