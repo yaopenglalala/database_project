@@ -41,14 +41,24 @@ public class LeasedParkingSpaceDao extends JdbcDaoImpl<LeasedParkingSpace> {
         return get(connection, sql, temporaryParkingSpaceId);
     }*/
 
-    public List<LeasedParkingSpace> getLeasedParkingByCommunityAndState(Community community, int state){
+    public boolean modifyLeasedParkingSpaceState(int spaceId, int state){
+        String sql = "UPDATE leased_parking_space SET parking_state = ? where parking_space_id = ?";
+        return update(connection, sql, state, spaceId) != 0;
+    }
+
+    public List<LeasedParkingSpace> getLeasedParkingByCommunityAndState(Community community, int state) {
         String sql = "SELECT * FROM leased_parking_space where community_id = ? and parking_state = ?";
         return getList(connection, sql, community.getCommunityId(), state);
     }
 
-    public List<LeasedParkingSpace> getLeasedParkingSpacesByCommunity(Community community){
+    public List<LeasedParkingSpace> getLeasedParkingSpacesByCommunity(Community community) {
         String sql = "SELECT * FROM leased_parking_space where community_id = ?";
         return getList(connection, sql, community.getCommunityId());
+    }
+
+    public LeasedParkingSpace getLeasedParkingSpaceBySpaceId(int spaceId) {
+        String sql = "SELECT * FROM leased_parking_space where parking_space_id = ?";
+        return get(connection, sql, spaceId);
     }
 
     public List<LeasedParkingSpace> getAllLeasedParkingSpace() {

@@ -50,10 +50,11 @@ public class HouseService {
     }
 
     public List<House> getEmptyHousesByBuilding(Building building){
+        List<House> res = new ArrayList<>();
         List<House> houses = getHouses(building);
         for (House house : houses){
-            if (housePurchaseRecordDao.getRecordByHouseId(house.getHouse_id()) != null)
-                houses.remove(house);
+            if (housePurchaseRecordDao.getRecordByHouseId(house.getHouse_id()) == null)
+                res.add(house);
         }
         return houses;
     }
