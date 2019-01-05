@@ -8,10 +8,8 @@ import model.entity.parkingspace.LeasedParkingSpace;
 import model.entity.parkingspace.OwnedParkingSpace;
 import model.entity.parkingspace.TemporaryParkingSpace;
 import model.relation.PropertyRecord;
-import model.relation.equipment.IndoorEquipCheck;
-import model.relation.equipment.IndoorEquipRepair;
-import model.relation.equipment.OutdoorEquipCheck;
-import model.relation.equipment.OutdoorEquipRepair;
+import model.relation.building.Complaint;
+import model.relation.equipment.*;
 import model.relation.parking.TemporaryParkingRecord;
 import model.relation.resident.ResidentCost;
 import service.*;
@@ -325,6 +323,8 @@ public class UI {
                         }
                         System.out.println("输入小区号");
                         int inputIN = Integer.parseInt(Input());
+                        if (inputIN == 0)
+                            break;
                         Community community = communities.get(inputIN - 1);
                         if (input.equals("1")) {
 //3.1
@@ -348,38 +348,38 @@ public class UI {
                             System.out.println("2.修理");
                             int inputInteger2 = Integer.parseInt(Input());
                             if (!(inputInteger2 == 1 || inputInteger2 == 2)) {
-                                                           }
+                            }
                             if (inputInteger2 == 1) {
-                                List<OutdoorEquipCheck> outdoorEquipChecks = equipmentService.getOutEquipCheck(outdoorEquipments.get(inputInteger-1));
-                                System.out.println("编号"+"  状态"+"  时间");
-                                for(int i=0;i<outdoorEquipChecks.size();i++){
-                                System.out.println((i+1)+"   "+
-                                                   outdoorEquipChecks.get(i).getState()+"  "+
-                                                    outdoorEquipChecks.get(i).getTime());
+                                List<OutdoorEquipCheck> outdoorEquipChecks = equipmentService.getOutEquipCheck(outdoorEquipments.get(inputInteger - 1));
+                                System.out.println("编号" + "  状态" + "  时间");
+                                for (int i = 0; i < outdoorEquipChecks.size(); i++) {
+                                    System.out.println((i + 1) + "   " +
+                                            outdoorEquipChecks.get(i).getState() + "  " +
+                                            outdoorEquipChecks.get(i).getTime());
                                 }
-                                System.out.print("输入1开始检查设备，其他返回上层");
+                                System.out.println("输入1开始检查设备，其他返回上层");
                                 int center = Integer.parseInt(Input());
-                                if(center==1){
-                                 System.out.println("输入状态，0好，1坏");
+                                if (center == 1) {
+                                    System.out.println("输入状态，0好，1坏");
                                     center = Integer.parseInt(Input());
-                                    equipmentService.addOutEquipCheck(outdoorEquipments.get(inputInteger-1),center);
+                                    equipmentService.addOutEquipCheck(outdoorEquipments.get(inputInteger - 1), center);
                                 }
                             }
                             if (inputInteger2 == 2) {
-                                List<OutdoorEquipRepair> outdoorEquipRepairs =equipmentService.getOutEquipRepair(outdoorEquipments.get(inputInteger-1));
-                                System.out.println("编号"+"  状态"+"  花费"+"  时间");
-                                for(int i=0;i<outdoorEquipRepairs.size();i++){
-                                    System.out.println((i+1)+"   "+
-                                            outdoorEquipRepairs.get(i).getState()+"  "+
-                                            outdoorEquipRepairs.get(i).getCost()+"   "+
+                                List<OutdoorEquipRepair> outdoorEquipRepairs = equipmentService.getOutEquipRepair(outdoorEquipments.get(inputInteger - 1));
+                                System.out.println("编号" + "  状态" + "  花费" + "  时间");
+                                for (int i = 0; i < outdoorEquipRepairs.size(); i++) {
+                                    System.out.println((i + 1) + "   " +
+                                            outdoorEquipRepairs.get(i).getState() + "  " +
+                                            outdoorEquipRepairs.get(i).getCost() + "   " +
                                             outdoorEquipRepairs.get(i).getTime());
                                 }
-                                System.out.print("输入设备编号使其修好，输入0新建维修，输入其他无变化");
+                                System.out.println("输入设备编号使其修好，输入0新建维修，输入其他无变化");
                                 int center = Integer.parseInt(Input());
-                                if(center==0){
-                                    equipmentService.addOutEquipRepair(outdoorEquipments.get(inputInteger-1),10);
-                                }else {
-                                    equipmentService.modifyOutEquipRepairState(outdoorEquipRepairs.get(inputInteger-1),0);
+                                if (center == 0) {
+                                    equipmentService.addOutEquipRepair(outdoorEquipments.get(inputInteger - 1), 10);
+                                } else {
+                                    equipmentService.modifyOutEquipRepairState(outdoorEquipRepairs.get(center - 1), 0);
                                 }
                             }
                             /**
@@ -389,14 +389,14 @@ public class UI {
                         }
                         if (input.equals("2")) {
 //3.2
-                           List<Building> buildings =houseService.getBuildings(community);
+                            List<Building> buildings = houseService.getBuildings(community);
                             for (int i = 0; i < buildings.size(); i++) {
                                 System.out.println("楼编号：" + (i + 1) + "楼名称：" + buildings.get(i).getName() + " ");
                             }
                             System.out.println("输入楼号");
-                             inputIN = Integer.parseInt(Input());
+                            inputIN = Integer.parseInt(Input());
                             Building building = buildings.get(inputIN - 1);
-                             List<IndoorEquipment> indoorEquipments =equipmentService.getAllIndoorEquipByBuilding(building);
+                            List<IndoorEquipment> indoorEquipments = equipmentService.getAllIndoorEquipByBuilding(building);
                             System.out.println("设备编号  " + "设备类型  " + "描述  " + "状态  ");
                             for (int i = 0; i < indoorEquipments.size(); i++) {
                                 System.out.println((i + 1) + "  " +
@@ -413,57 +413,175 @@ public class UI {
                             int inputInteger2 = Integer.parseInt(Input());
                             if (!(inputInteger2 == 1 || inputInteger2 == 2)) {
                             }
-                            if(inputInteger2==1){
-                                List<IndoorEquipCheck> indoorEquipChecks = equipmentService.getInEquipCheck(indoorEquipments.get(inputInteger-1));
-                                System.out.println("编号"+"  状态"+"  时间");
-                                for(int i=0;i<indoorEquipChecks.size();i++){
-                                    System.out.println((i+1)+"   "+
-                                            indoorEquipChecks.get(i).getState()+"  "+
+                            if (inputInteger2 == 1) {
+                                List<IndoorEquipCheck> indoorEquipChecks = equipmentService.getInEquipCheck(indoorEquipments.get(inputInteger - 1));
+                                System.out.println("编号" + "  状态" + "  时间");
+                                for (int i = 0; i < indoorEquipChecks.size(); i++) {
+                                    System.out.println((i + 1) + "   " +
+                                            indoorEquipChecks.get(i).getState() + "  " +
                                             indoorEquipChecks.get(i).getTime());
                                 }
                                 System.out.print("输入1开始检查设备，其他返回上层");
                                 int center = Integer.parseInt(Input());
-                                if(center==1){
+                                if (center == 1) {
                                     System.out.println("输入状态，0好，1坏");
                                     center = Integer.parseInt(Input());
-                                    equipmentService.addInEquipCheck(indoorEquipments.get(inputInteger-1),center);
+                                    System.out.print(equipmentService.addInEquipCheck(indoorEquipments.get(inputInteger - 1), center));  //equipmentService.addInEquipCheck(indoorEquipments.get(inputInteger-1),center);
                                 }
                             }
                             if (inputInteger2 == 2) {
-                                List<IndoorEquipRepair> indoorEquipRepairs =equipmentService.getInEquipRepair(indoorEquipments.get(inputInteger-1));
-                                System.out.println("编号"+"  状态"+"  花费"+"  时间");
-                                for(int i=0;i<indoorEquipRepairs.size();i++){
-                                    System.out.println((i+1)+"   "+
-                                            indoorEquipRepairs.get(i).getState()+"  "+
-                                            indoorEquipRepairs.get(i).getCost()+"   "+
+                                List<IndoorEquipRepair> indoorEquipRepairs = equipmentService.getInEquipRepair(indoorEquipments.get(inputInteger - 1));
+                                System.out.println("编号" + "  状态" + "  花费" + "  时间");
+                                for (int i = 0; i < indoorEquipRepairs.size(); i++) {
+                                    System.out.println((i + 1) + "   " +
+                                            indoorEquipRepairs.get(i).getState() + "  " +
+                                            indoorEquipRepairs.get(i).getCost() + "   " +
                                             indoorEquipRepairs.get(i).getTime());
                                 }
                                 System.out.print("输入设备编号使其修好，输入0新建维修，输入其他无变化");
                                 int center = Integer.parseInt(Input());
-                                if(center==0){
-                                    equipmentService.addInEquipRepair(indoorEquipments.get(inputInteger-1),10);
-                                }else {
-                                    equipmentService.modifyInEquipRepairState(indoorEquipRepairs.get(inputInteger-1),0);
+
+                                if (center == 0) {
+                                    equipmentService.addInEquipRepair(indoorEquipments.get(inputInteger - 1), 100);
+                                } else {
+                                    equipmentService.modifyInEquipRepairState(indoorEquipRepairs.get(center - 1), 0);
                                 }
                             }
                         }
+                        FeedbackService feedbackService = new FeedbackService();
                         if (input.equals("3")) {
 //3.3
+                            List<Building> buildings = houseService.getBuildings(community);
+                            for (int i = 0; i < buildings.size(); i++) {
+                                System.out.println("楼编号：" + (i + 1) + "楼名称：" + buildings.get(i).getName() + " ");
+                            }
+                            System.out.println("输入楼号");
+                            inputIN = Integer.parseInt(Input());
+                            Building building = buildings.get(inputIN - 1);
+
                             /**
                              * list<> 3个
                              *待分配
                              已分配未解决
                              已解决
                              */
+                            System.out.println("======================================");
+                            System.out.println("1.待分配问题");
+                            System.out.println("2.已分配未解决问题");
+                            System.out.println("3.已解决问题");
+                            System.out.println("4.添加问题");
+                            int issue = Integer.parseInt(Input());
+                            if (issue == 1) {
+                                List<EquipmentIssue> equipmentIssues = feedbackService.getNotSolvedIssues(building);
+                                System.out.println("房屋ID，设备ID，类型ID，描述，时间");
+                                for (int i = 0; i < equipmentIssues.size(); i++) {
+                                    System.out.println("第" + (i + 1) + ": " + equipmentIssues.get(i).getHouse_id() + "   " +
+                                            equipmentIssues.get(i).getEquipment_id() + "   " +
+                                            equipmentIssues.get(i).getType() + "   " +
+                                            equipmentIssues.get(i).getDescription() + "   " +
+                                            equipmentIssues.get(i).getTime());
+
+                                }
+                                System.out.print("为问题添加相应修理。" +
+                                        "输入编号：");
+                               /*/////////////////////////////////////////////////////////////////////////////////////////*/
+                                int e = Integer.parseInt(Input());
+                                if (e == 0)
+                                    break;
+                                System.out.print("输入修理ID：");
+                                int c = Integer.parseInt(Input());
+                                if (c == 0)
+                                    break;
+                                feedbackService.modifyIssueRepairId(equipmentIssues.get(e - 1), c);
+                            }
+                            if (issue == 2) {
+                                List<EquipmentIssue> equipmentIssues = feedbackService.getSolvingIssues(building);
+                                System.out.println("房屋ID，设备ID，修理ID，类型ID，描述，时间");
+                                for (int i = 0; i < equipmentIssues.size(); i++) {
+                                    System.out.println("第" + (i + 1) + ": " + equipmentIssues.get(i).getHouse_id() + "   " +
+                                            equipmentIssues.get(i).getEquipment_id() + "   " +
+                                            equipmentIssues.get(i).getRepair_id() + "   " +
+                                            equipmentIssues.get(i).getType() + "   " +
+                                            equipmentIssues.get(i).getDescription() + "   " +
+                                            equipmentIssues.get(i).getTime());
+                                }
+                            }
+                            if (issue == 3) {
+                                List<EquipmentIssue> equipmentIssues = feedbackService.getSolvedIssues(building);
+                                System.out.println("房屋ID，设备ID，修理ID，类型ID，描述，时间");
+                                for (int i = 0; i < equipmentIssues.size(); i++) {
+                                    System.out.println("第" + (i + 1) + ": " + equipmentIssues.get(i).getHouse_id() + "   " +
+                                            equipmentIssues.get(i).getEquipment_id() + "   " +
+                                            equipmentIssues.get(i).getRepair_id() + "   " +
+                                            equipmentIssues.get(i).getType() + "   " +
+                                            equipmentIssues.get(i).getDescription() + "   " +
+                                            equipmentIssues.get(i).getTime());
+                                }
+                            }
+
+                            if (issue == 4) {
+                                System.out.println("输入室内机器ID");
+                                int e_id = Integer.parseInt(Input());
+                                EquipmentService equipmentService1 = new EquipmentService();
+                                IndoorEquipment indoorEquipment = equipmentService1.getIE(e_id);
+                                System.out.println("输入房子ID");
+                                int h_id = Integer.parseInt(Input());
+                                System.out.println("输入类型(1-5)");
+                                int t_id = Integer.parseInt(Input());
+                                System.out.println("输入描述");
+                                String desc = Input();
+                                feedbackService.addInEquipIssue(indoorEquipment, h_id, t_id, desc);
+
+                            }
                         }
                         if (input.equals("4")) {
 //3.4
+                            while (true) {
                             /*list<>
                             * 解决，未解决
                             * */
+                                System.out.println("===========================");
+                                System.out.println("1.查看投诉");
+                                System.out.println("2.发起投诉");
+                                System.out.println("3.更新投诉");
+
+                                int inputInteger = Integer.parseInt(Input());
+                                if (inputInteger == 1) {
+                                    for (int i = 0; i < 5; i++) {
+                                        List<Complaint> complaints = feedbackService.getComplaintByType(i);
+                                        System.out.println("投诉类型:" + (i + 1) + "          投诉房ID  投诉描述  日期  解决意见（没有既没有解决）");
+                                        for (int j = 0; j < complaints.size(); j++) {
+                                            System.out.println(complaints.get(j).getHouse_id() + "  " + complaints.get(j).getDescription() + "  " + complaints.get(j).getDate() + "  " + complaints.get(j).getProcess());
+                                        }
+                                    }
+                                }
+                                if (inputInteger == 2) {
+                                    System.out.println("请输入信息:");
+                                    System.out.print("house_id:");
+                                    int house_id = Integer.parseInt(Input());
+                                    System.out.print("type:(1-5)");
+                                    int type = Integer.parseInt(Input());
+                                    System.out.print("description:");
+                                    String description = Input();
+                                    feedbackService.addComplaint(house_id, type, description);
+                                }
+                                if (inputInteger == 3) {
+                                    List<Complaint> complaints = feedbackService.getNotSolvedComplaint();
+                                    System.out.println("未解决问题：  投诉房ID  投诉描述  日期  投诉类型");
+                                    for (int j = 0; j < complaints.size(); j++) {
+                                        System.out.println("第" + (j + 1) + "个：" + complaints.get(j).getHouse_id() + "  " + complaints.get(j).getDescription() + "  " + complaints.get(j).getDate() + "  " + complaints.get(j).getType());
+                                    }
+                                    System.out.print("输入编号:");
+                                    int id = Integer.parseInt(Input());
+                                    if (!(id > 0 && id <= complaints.size()))
+                                        break;
+                                    System.out.print("输入解决方案:");
+                                    String process = Input();
+                                    feedbackService.modifyComplaintProcess(complaints.get(id - 1), process);
+                                }
+                            }
+
                         }
-
-
                     }
                 }
                 if (input.equals("4")) {
@@ -539,6 +657,9 @@ public class UI {
         System.out.println("请输入要选择的数字,返回上一层用 0 (不合法的输入作用和0相同)");
         Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine();
+        if (input.equals("")) {
+            input = "0";
+        }
         return input;
     }
 

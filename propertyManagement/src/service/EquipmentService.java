@@ -77,7 +77,9 @@ public class EquipmentService {
     }
 
     public int addInEquipCheck(IndoorEquipment equipment, int state){
-        if (indoorDao.getInEquipByEquipId(equipment.getBuilding_id()) == null) return 1;
+        if (indoorDao.getInEquipByEquipId(equipment.getEquipment_id()) == null) return 1;
+        equipment.setState(state);
+        indoorDao.updateIndoorEquipment(equipment);
         IndoorEquipCheck check = new IndoorEquipCheck();
         check.setEquipment_id(equipment.getEquipment_id());
         check.setState(state);
@@ -86,8 +88,14 @@ public class EquipmentService {
         return 0;
     }
 
+    public IndoorEquipment getIE(int id){
+        return indoorDao.getIndoorEquipment(id);
+    }
+
     public int addOutEquipCheck(OutdoorEquipment equipment, int state){
         if (outdoorDao.getOutEquipByEquipId(equipment.getEquipment_id()) == null) return 1;
+        equipment.setState(state);
+        outdoorDao.updateOutdoorEquipment(equipment);
         OutdoorEquipCheck check = new OutdoorEquipCheck();
         check.setEquipment_id(equipment.getEquipment_id());
         check.setState(state);

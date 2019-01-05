@@ -1,5 +1,6 @@
 package service;
 
+import dao.classDao.entityDao.equipmentDao.IndoorEquipmentDao;
 import dao.classDao.relationDao.buildingDao.ComplaintDao;
 import dao.classDao.relationDao.equipmentDao.EquipmentIssueDao;
 import model.entity.equipment.IndoorEquipment;
@@ -59,10 +60,13 @@ public class FeedbackService {
         return res;
     }
 
-    public boolean addInEquipIssue(IndoorEquipment equipment, House house, int type, String description){
+    public boolean addInEquipIssue(IndoorEquipment equipment, int house, int type, String description){
         EquipmentIssue issue = new EquipmentIssue();
+        IndoorEquipmentDao indoorDao= new IndoorEquipmentDao();
+        equipment.setState(1);
+        indoorDao.updateIndoorEquipment(equipment);
         issue.setEquipment_id(equipment.getEquipment_id());
-        issue.setHouse_id(house.getHouse_id());
+        issue.setHouse_id(house);
         issue.setRepair_id(null);
         issue.setType(type);
         issue.setDescription(description);
@@ -86,9 +90,9 @@ public class FeedbackService {
     }
 
 
-    public boolean addComplaint(House house, int type, String description){
+    public boolean addComplaint(int house, int type, String description){
         Complaint complaint = new Complaint();
-        complaint.setHouse_id(house.getHouse_id());
+        complaint.setHouse_id(house);
         complaint.setType(type);
         complaint.setDescription(description);
         complaint.setProcess(null);
