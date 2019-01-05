@@ -153,7 +153,7 @@ public class UI {
                      HouseService houseService =new HouseService();
                     List<Community> communities = houseService.getCommunitys();
                     for(int i=0;i<communities.size();i++){
-                        System.out.print("小区编号："+(i+1)+"小区名称："+communities.get(i).getName());
+                        System.out.println("小区编号："+(i+1)+"小区名称："+communities.get(i).getName()+" ");
                     }
                     System.out.println("输入小区号");
                     int inputIN = Integer.parseInt(Input());
@@ -195,7 +195,7 @@ public class UI {
                                System.out.println("选择状态为0的默认停车，为1的为还车");
                                int inputInteger = Integer.parseInt(Input());
                                 /*判断*/
-                                if(!(inputInteger>0||inputInteger<=temporaryParkingSpaces.size())){
+                                if(!(inputInteger>0&&inputInteger<=temporaryParkingSpaces.size())){
                                     break;
                                 }//来进车
                                 if(temporaryParkingSpaces.get(inputInteger-1).getParking_state()==0){
@@ -205,7 +205,7 @@ public class UI {
                                 }//出车
                                 if(temporaryParkingSpaces.get(inputInteger-1).getParking_state()==1){
                                     System.out.println("输入花费");
-                                    parkingService.addTempParkingRecord(temporaryParkingSpaces.get(inputInteger-1),(float)Integer.parseInt(Input()) )
+                                    parkingService.tempLeaving(temporaryParkingSpaces.get(inputInteger-1),(float)Integer.parseInt(Input()) );
                                 }
                                 break;
                             }
@@ -272,7 +272,7 @@ public class UI {
                                 ;
                                 System.out.println("购买车位请选择编号");
                                 int inputInteger = Integer.parseInt(Input());
-                                if (true) {//编号不在0-size之间
+                                if (!(inputInteger>0||inputInteger<=ownedParkingSpaces.size())) {//编号不在0-size之间
                                     break;
                                 }
                                 System.out.println("输入买车位者ID（此处可以为0）");
@@ -287,6 +287,7 @@ public class UI {
                                  * 买车位信息 插入 （并记录车位管理费用
                                  *
                                  */
+                                 parkingService.purchaseParkingSpace(residentService.getResidentByResidentId(inputInteger2),ownedParkingSpaces.get(inputInteger-1),50000);
                                 break;
                             }
                         }

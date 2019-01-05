@@ -43,4 +43,9 @@ public class OwnedParkingSpaceDao extends JdbcDaoImpl<OwnedParkingSpace> {
                 "FROM owned_parking_space ORDER BY parking_space_id DESC";
         return getList(connection, sql);
     }
+
+    public OwnedParkingSpace getOwnedParkingSpaceBySpaceId(int spaceId){
+        String sql = "SELECT * FROM owned_parking_space where parking_space_id = ?";
+        return get(connection, sql, spaceId);
+    }
 }

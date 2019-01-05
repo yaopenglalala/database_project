@@ -28,6 +28,10 @@ public class OutEquipRepairDao extends JdbcDaoImpl<OutdoorEquipRepair> {
         String sql = "SELECT * FROM out_equip_repair where equipment_id = ?";
         return getList(connection, sql, equipmentId);
     }
+    public List<OutdoorEquipRepair> getAllRepairs(){
+        String sql = "SELECT * FROM out_equip_repair where cost > 0";
+        return getList(connection, sql);
+    }
 
     private static void init(){
 

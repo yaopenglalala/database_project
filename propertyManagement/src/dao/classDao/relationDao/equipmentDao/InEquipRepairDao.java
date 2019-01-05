@@ -28,7 +28,10 @@ public class InEquipRepairDao extends JdbcDaoImpl<IndoorEquipRepair> {
         String sql = "SELECT * FROM in_equip_repair where equipment_id = ?";
         return getList(connection, sql, equipmentId);
     }
-
+    public List<IndoorEquipRepair> getAllRepairs(){
+        String sql = "SELECT * FROM in_equip_repair where cost >0";
+        return getList(connection, sql);
+    }
     private static void init(){
 
     }

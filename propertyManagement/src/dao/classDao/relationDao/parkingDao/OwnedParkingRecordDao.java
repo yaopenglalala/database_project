@@ -18,11 +18,11 @@ public class OwnedParkingRecordDao extends JdbcDaoImpl<OwnedParkingRecord> {
         init();
     }
 
-    public boolean addRecord(LeasedParkingRecord record){
+    public boolean addRecord(OwnedParkingRecord record){
         if (getRecordBySpaceId(record.getParking_space_id()) != null) return false;
         String sql = "INSERT INTO owned_parking_record (parking_space_id, resident_id, date, cost)" +
                 " value (?, ?, ?, ?)";
-        return update(connection, sql, record.getParking_space_id(),record.getResident_id(), record.getStart_time(), record.getEnd_time()) != 0;
+        return update(connection, sql, record.getParking_space_id(),record.getResident_id(), record.getDate(), record.getCost()) != 0;
     }
 
     public OwnedParkingRecord getRecordBySpaceId(int parkingSpaceId){

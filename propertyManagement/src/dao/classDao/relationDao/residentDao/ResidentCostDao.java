@@ -33,7 +33,10 @@ public class ResidentCostDao  extends JdbcDaoImpl<ResidentCost> {
         String sql = "SELECT * FROM resident_cost where resident_id = ?";
         return getList(connection, sql, residentId);
     }
-
+    public List<ResidentCost> getAllCosts(){
+        String sql = "SELECT * FROM resident_cost ";
+        return getList(connection, sql);
+    }
     private static void init(){
 
     }

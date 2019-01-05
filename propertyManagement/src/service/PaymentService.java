@@ -6,7 +6,10 @@ import dao.classDao.relationDao.equipmentDao.InEquipRepairDao;
 import dao.classDao.relationDao.equipmentDao.OutEquipRepairDao;
 import dao.classDao.relationDao.parkingDao.TemporaryParkingRecordDao;
 import dao.classDao.relationDao.residentDao.ResidentCostDao;
+import model.relation.equipment.IndoorEquipRepair;
+import model.relation.equipment.OutdoorEquipRepair;
 import model.relation.parking.TemporaryParkingRecord;
+import model.relation.resident.ResidentCost;
 
 import java.util.List;
 
@@ -34,7 +37,17 @@ public class PaymentService {
     }
 
     public List<TemporaryParkingRecord> getTemParkingRecordCost(){
+            return temporaryParkingRecordDao.getRecordsByCostNoNull();
+    }
 
+    public List<ResidentCost> getResidentCost(){
+        return residentCostDao.getAllCosts();
+    }
+    public List<IndoorEquipRepair> getInRepairCost(){
+        return indoorEquipRepairDao.getAllRepairs();
+    }
+    public List<OutdoorEquipRepair> getOutRepairCost(){
+        return outEquipRepairDao.getAllRepairs();
     }
 
 }

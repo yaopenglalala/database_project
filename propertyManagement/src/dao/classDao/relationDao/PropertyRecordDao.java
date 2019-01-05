@@ -28,7 +28,10 @@ public class PropertyRecordDao extends JdbcDaoImpl<PropertyRecord> {
         String sql = "SELECT FROM property_record where time > ? and time < ?";
         return getList(connection, sql, startTime, endTime);
     }
-
+    public List<PropertyRecord> getAllRecords(){
+        String sql = "SELECT * FROM property_record  ";
+        return getList(connection, sql);
+    }
     private static void init(){
 
     }
