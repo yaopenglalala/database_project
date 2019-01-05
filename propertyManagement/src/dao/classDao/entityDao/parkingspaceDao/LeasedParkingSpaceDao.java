@@ -4,7 +4,6 @@ import dao.JDBCUtil;
 import dao.daoInterface.JdbcDaoImpl;
 import model.entity.house.Community;
 import model.entity.parkingspace.LeasedParkingSpace;
-import model.entity.parkingspace.TemporaryParkingSpace;
 
 import java.sql.Connection;
 import java.util.List;
@@ -23,9 +22,9 @@ public class LeasedParkingSpaceDao extends JdbcDaoImpl<LeasedParkingSpace> {
     }
 
     public boolean addLeasedParkingSpace(LeasedParkingSpace leasedParkingSpace) {
-        String sql = "INSERT INTO leased_parking_space (parking_space_id, community_id, description) " +
+        String sql = "INSERT INTO leased_parking_space (community_id, description,parking_state) " +
                 "values (?,?,?)";
-        update(connection, sql, leasedParkingSpace.getParking_space_id(), leasedParkingSpace.getCommunity_id(), leasedParkingSpace.getDescription());
+        update(connection, sql, leasedParkingSpace.getCommunity_id(), leasedParkingSpace.getDescription(),leasedParkingSpace.getParking_state());
         return true;
     }
 
@@ -49,12 +48,12 @@ public class LeasedParkingSpaceDao extends JdbcDaoImpl<LeasedParkingSpace> {
 
     public List<LeasedParkingSpace> getLeasedParkingByCommunityAndState(Community community, int state) {
         String sql = "SELECT * FROM leased_parking_space where community_id = ? and parking_state = ?";
-        return getList(connection, sql, community.getCommunity_id(), state);
+        return getList(connection, sql, community.getCommunityId(), state);
     }
 
     public List<LeasedParkingSpace> getLeasedParkingSpacesByCommunity(Community community) {
         String sql = "SELECT * FROM leased_parking_space where community_id = ?";
-        return getList(connection, sql, community.getCommunity_id());
+        return getList(connection, sql, community.getCommunityId());
     }
 
     public LeasedParkingSpace getLeasedParkingSpaceBySpaceId(int spaceId) {

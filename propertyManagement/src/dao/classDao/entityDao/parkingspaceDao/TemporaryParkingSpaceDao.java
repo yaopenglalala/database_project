@@ -18,9 +18,9 @@ public class TemporaryParkingSpaceDao extends JdbcDaoImpl<TemporaryParkingSpace>
     }
     private static void init(){}
     public boolean addTemporaryParkingSpace(TemporaryParkingSpace temporaryParkingSpace) {
-        String sql = "INSERT INTO temporary_parking_space (parking_space_id, community_id, description,parking_state) " +
-                "values (?,?,?,?)";
-        update(connection,sql,temporaryParkingSpace.getParking_space_id(), temporaryParkingSpace.getCommunity_id(), temporaryParkingSpace.getDescription(),temporaryParkingSpace.getParking_state());
+        String sql = "INSERT INTO temporary_parking_space (community_id, description,parking_state) " +
+                "values (?,?,?)";
+        update(connection,sql,temporaryParkingSpace.getCommunity_id(), temporaryParkingSpace.getDescription(),temporaryParkingSpace.getParking_state());
         return true;
     }
     public TemporaryParkingSpace getTemporaryParkingSpace(int temporaryParkingSpaceId){
@@ -41,11 +41,11 @@ public class TemporaryParkingSpaceDao extends JdbcDaoImpl<TemporaryParkingSpace>
 
     public List<TemporaryParkingSpace> getTempParkingByCommunityAndState(Community community, int state){
         String sql = "SELECT * FROM temporary_parking_space where community_id = ? and parking_state = ?";
-        return getList(connection, sql, community.getCommunity_id(), state);
+        return getList(connection, sql, community.getCommunityId(), state);
     }
 
     public List<TemporaryParkingSpace> getTempParkingSpacesByCommunity(Community community){
         String sql = "SELECT * FROM temporary_parking_space where community_id = ?";
-        return getList(connection, sql, community.getCommunity_id());
+        return getList(connection, sql, community.getCommunityId());
     }
 }

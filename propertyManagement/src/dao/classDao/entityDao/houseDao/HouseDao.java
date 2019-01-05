@@ -20,9 +20,9 @@ public class HouseDao extends JdbcDaoImpl<House> {
     }
 
     public boolean addHouse(House house) {
-        String sql = "INSERT INTO house (house_id, building_id, name,size) " +
-                "values (?,?,?,?)";
-        update(connection,sql,house.getHouse_id(), house.getBuilding_id(), house.getName(),house.getSize());
+        String sql = "INSERT INTO house (building_id, name, size) " +
+                "values (?,?,?)";
+        update(connection,sql,house.getBuilding_id(), house.getName(),house.getSize());
         return true;
     }
 

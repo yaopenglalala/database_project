@@ -4,7 +4,6 @@ import dao.daoInterface.JdbcDaoImpl;
 import model.entity.house.Building;
 
 import java.sql.Connection;
-import java.sql.Statement;
 import java.util.List;
 
 /**
@@ -16,7 +15,7 @@ public class BuildingDao extends JdbcDaoImpl<Building> {
         init();
     }
     private static void init() {
-        try {
+      /*  try {
             Statement statement = connection.createStatement();
             statement.executeUpdate("CREATE TABLE IF not exists building\n" +
                             "(\n" +
@@ -30,13 +29,13 @@ public class BuildingDao extends JdbcDaoImpl<Building> {
             statement.close();
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     public boolean addBuilding(Building building) {
-        String sql = "INSERT INTO building (building_id, community_id,name) " +
-                "values (?,?,?)";
-        update(connection,sql,building.getBuilding_id(), building.getCommunity_id(), building.getName());
+        String sql = "INSERT INTO building (community_id, name) " +
+                "values (?,?)";
+        update(connection,sql,building.getCommunity_id(), building.getName());
         return true;
     }
 

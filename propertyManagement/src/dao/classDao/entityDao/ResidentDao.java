@@ -19,9 +19,9 @@ public class ResidentDao extends JdbcDaoImpl<Resident> {
     private static void init(){}
 
     public boolean addResident(Resident resident) {
-        String sql = "INSERT INTO resident (resident_id, identity_card, name,tel) " +
-                "values (?,?,?,?)";
-        update(connection,sql,resident.getResident_id(), resident.getIdentity_card(), resident.getName(),resident.getTel());
+        String sql = "INSERT INTO resident (identity_card, name,tel) " +
+                "values (?,?,?)";
+        update(connection,sql,resident.getIdentity_card(), resident.getName(),resident.getTel());
         return true;
     }
 

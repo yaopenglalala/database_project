@@ -37,9 +37,9 @@ public class IndoorEquipmentDao extends JdbcDaoImpl<IndoorEquipment> {
     }
 
     public boolean addIndoorEquipment(IndoorEquipment indoorEquipment) {
-        String sql = "INSERT INTO indoor_equipment (equipment_id, building_id, type,description,state) " +
-                "values (?,?,?,?,?)";
-        update(connection,sql,indoorEquipment.getEquipment_id(), indoorEquipment.getBuilding_id(), indoorEquipment.getType(),indoorEquipment.getDescription(),indoorEquipment.getState());
+        String sql = "INSERT INTO indoor_equipment (building_id, type,description,state) " +
+                "values (?,?,?,?)";
+        update(connection,sql,indoorEquipment.getBuilding_id(), indoorEquipment.getType(),indoorEquipment.getDescription(),indoorEquipment.getState());
         return true;
     }
 

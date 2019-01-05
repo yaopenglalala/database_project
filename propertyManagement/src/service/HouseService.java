@@ -33,7 +33,7 @@ public class HouseService {
     }
 
     public List<Building> getBuildings(Community community){
-        return buildingDao.getBuildingsByCommunityId(community.getCommunity_id());
+        return buildingDao.getBuildingsByCommunityId(community.getCommunityId());
     }
 
     public List<House> getHouses(Building building){
@@ -76,7 +76,6 @@ public class HouseService {
         purchaseRecord.setCost(cost);
         purchaseRecord.setTime(new Date());
         housePurchaseRecordDao.addRecord(purchaseRecord);
-
         residentService.addCost(residentId, "Purchase house", cost);
         return 0;
     }

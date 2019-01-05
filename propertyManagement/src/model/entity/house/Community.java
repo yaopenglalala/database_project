@@ -4,17 +4,17 @@ package model.entity.house;
  * Created by your dad on 2019/1/3.
  */
 public class Community {
-    private int community_id;
+    private Integer communityId;
     private String name;
     private float longitude;
     private float latitude;
 
-    public int getCommunity_id() {
-        return community_id;
+    public Integer getCommunityId() {
+        return communityId;
     }
 
-    public void setCommunity_id(Integer community_id) {
-        this.community_id = community_id;
+    public void setCommunityId(Integer community_id) {
+        this.communityId = community_id;
     }
 
     public String getName() {
