@@ -2,7 +2,6 @@ package dao.classDao.relationDao.residentDao;
 
 import dao.JDBCUtil;
 import dao.daoInterface.JdbcDaoImpl;
-import model.relation.parking.LeasedParkingRecord;
 import model.relation.resident.ResidentCost;
 
 import java.sql.Connection;

@@ -25,11 +25,11 @@ public class TemporaryParkingSpaceDao extends JdbcDaoImpl<TemporaryParkingSpace>
     }
     public TemporaryParkingSpace getTemporaryParkingSpace(int temporaryParkingSpaceId){
         String sql = "SELECT * " +
-                "FROM temporary_parking_space where answer_id = ? ";
+                "FROM temporary_parking_space where parking_space_id = ? ";
         return get(connection, sql, temporaryParkingSpaceId);
     }
     public boolean updateTemporaryParkingSpace(TemporaryParkingSpace temporaryParkingSpace){
-        String sql = "UPDATE temporary_parking_space SET parking_state = ? where answer_id = ?";
+        String sql = "UPDATE temporary_parking_space SET parking_state = ? where parking_space_id = ?";
         update(connection,sql,temporaryParkingSpace.getParking_state(), temporaryParkingSpace.getParking_space_id());
         return true;
     }
